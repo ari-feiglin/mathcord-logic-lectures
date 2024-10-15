@@ -1,0 +1,322 @@
+\rightline{Sources: A Concise Introduction to Mathematical Logic, Section 1, W. Rautenberg}
+
+We begin by defining {\it what} exactly mathematical logic is.
+Mathematical logic is a sort of metamathematical study of mathematics itself.
+It studies what sorts of logical statements we can make, how we can manipulate them, and what we
+can say about the mathematical objects which satisfy them.
+But the best way to understand what mathematical logic is, is to actually {\it do} it!
+So let's begin.
+
+\subsection{Propositional Logic}
+
+We begin our discussion with the simplest logic: propositional logic.
+This logic studies how we can connect propositions together, e.g. using {\it and}, {\it or},
+{\it not}, etc.
+Suppose we wanted to say that ``{\it if} it is cold outside {\it then} I will wear a coat'', how
+could we go about this mathematically?
+
+We begin with some definitions:
+
+\bdefn
+
+    A {\emphcolor boolean function} is a function $\set{0,1}^n\longto\set{0,1}$ for some $n>0$.
+
+\edefn
+
+\bdefn
+
+    A {\emphcolor connective} is a symbol $\s s$ with an associated boolean function (which will
+    be named with $\s s$ as well).
+    A set of connectives is called a {\emphcolor logical signature}.
+
+\edefn
+
+For boolean connectives $\circ$ (connectives whose function accepts two parameters), we can use a
+{\it truth table} to define it:
+$$ \pmatrix{a_{00} & a_{01}\cr a_{10} & a_{11}} $$
+where $a_{ij}$ is defined to be the value of $i\circ j$.
+So for example, we can define the following connective $\land$ as follows:
+$$ \pmatrix{0 & 0\cr 0 & 1} $$
+This connective takes two boolean values $x$ and $y$ and checks that both $x$ {\it and} $y$ are
+true.
+For this reason $\land$ is called {\it logical and} or a {\it conjunction}.
+
+We can also define {\it logical or} or {\it disjunction} $\lor$:
+$$ \pmatrix{0 & 1\cr 1 & 1} $$
+And {\it logical negation} $\neg$, which is a unary connective: $\neg0=1$ and $\neg1=0$.
+Finally let us define {\it logical implication} $\to$:
+$$ \pmatrix{1 & 1\cr 0 & 1} $$
+Why should false imply false ($0\to0=1$)?
+Well suppose I said ``if it rains then it is cloudy'', but it is not raining.
+Is what I said false?
+Well, not necessarily!
+This is what is called a {\it vaccuous truth}.
+
+Now suppose I wanted to string together connectives, like ``if it rains then it is cloudy and I
+should wear a jacket''.
+
+\bdefn
+
+    Suppose we have a global set of variables $V$, whose elements are simply symbols which we will
+    call {\it propositional variables}.
+    Now suppose we have a logical signature $\ell$, we define the set of
+    {\emphcolor propositional formulas} ${\cal F}_\ell$ recursively as follows:
+    \benum
+        \item If $p\in V$ is a propositional variable then it is a formula: $p\in{\cal F}_\ell$.
+        Such formulas are called {\emphcolor prime formulas}.
+        \item If $\s s\in\ell$ is a connective of arity $n$ and
+        $\phi_1,\dots,\phi_n\in{\cal F}_\ell$ are formulas, then so too is
+        $$ \s s\phi_1\cdots\phi_n\in{\cal F}_\ell $$
+    \eenum
+
+\edefn
+
+So for example, if $\ell=\set{\land,\lor,\neg}$ and $V=\set{p_1,p_2,\dots}$ then the following are
+formulas:
+$$ p_1, \qquad {\land} p_1p_2, \qquad {\land}{\lor} p_1p_2\neg p_3, \qquad
+\neg{\land}{\lor} p_1p_2{\land} p_1p_3 $$
+But using prefix notation like this is confusing, so we will adopt the custom that for binary
+connectives $\circ$, $\circ\phi\psi$ is instead written as $(\phi\circ\psi)$.
+So these formulas become
+$$ p_1, \qquad (p_1\land p_2), \qquad ((p_1\lor p_2)\land\neg p_3),
+\qquad \neg((p_1\lor p_2)\land(p_1\land p_3)) $$
+We will call the signature $\ell=\set{{\land},{\lor},{\neg}}$ the {\it standard signature}.
+
+An important thing to keep in mind is that currently formulas are simply special strings.
+We haven't assigned to them any value yet.
+
+Note that our definition of propositional formulas isn't really all that formal: how can we define
+a set using itself?
+Well formally, what we do is we look at the collection of all sets $S$ of strings (over the
+alphabet $\ell\cup V$) with the properties that $(1)$ $V\subseteq S$, $(2)$ if $\s s\in\ell$ has
+arity $n$ and $\phi_1,\dots,\phi_n\in S$ then $\s s\phi_1\cdots\phi_n\in S$.
+Then we simply define ${\cal F}_\ell$ to be the intersection of these sets.
+
+From this definition the following is immediate:
+
+\blemm[title=The Principle of Formula Induction]
+
+    Let $\ell$ be a logical signature.
+    Suppose ${\cal E}$ is a property of strings (i.e. a subset of the set of all strings over
+    $V\cup\ell$), with the following properties:
+    \benum
+        \item For every $p\in V$, ${\cal E}p$.
+        \item For every $\s s\in\ell$ with arity $n$, if $\phi_i\in{\cal F}_\ell$ for
+        $i=1,\dots,n$ then ${\cal E}\s s\phi_1\cdots\phi_n$.
+    \eenum
+    Then ${\cal E}\phi$ holds for all formulas $\phi\in{\cal F}_\ell$.
+
+\elemm
+
+Now how can we be sure that if we have a formula $\phi$, suppose of the form $\land\alpha\beta$,
+it is not simultaneously of the form $\land\alpha'\beta'$ for some other
+$\alpha,\beta\in{\cal F}$?
+We can use formula induction to prove the following:
+
+\blemm[title=The Unique Formula Reconstruction Property]
+
+    Every compound formula $\phi\in{\cal F}_\ell$ is of the form $\s s\phi_1\cdots\phi_n$ for
+    uniquely determined $\s s$ and $\phi_i$ for $i=1,\dots,n$.
+
+\elemm
+
+\Proof $\s s$ is obviously uniquely determined since it is the first character of $\phi$.
+Now, we need to prove that if $\phi_1\cdots\phi_n=\psi_1\cdots\psi_m$ then $n=m$ and $n=m$.
+To do so, we need to prove the claim that a proper prefix of a formula is not itself a formula.
+
+This uses formula induction: for prime formulas this is trivial.
+Otherwise, let $\phi=\s s\phi_1\cdots\phi_n$ then a proper prefix of $\phi$ is either $\s s$ which
+is not a formula, or of the form $\s s\phi_1\cdots\phi_i'$ where $\phi_i'$ is a prefix of
+$\phi_i$.
+In order for $\s s\phi_1\cdots\phi_i'$ to be a formula, $\phi_1\cdots\phi_i'$ must be able to be
+split into $n$ formulas.
+So suppose $\phi_1\cdots\phi_i'=\psi_1\cdots\psi_n$, but $\phi_1$ and $\psi_1$ cannot be prefixes
+of one another, so $\phi_1=\psi_1$.
+And so on until $i-1$.
+Then we have $\phi_i'=\psi_i\cdots\psi_n$, but then if $\phi_i'\neq\phi_i$ we have that $\psi_i$
+is a proper prefix of $\phi_i$, a contradiction to our inductive assumption.
+So $\phi_i=\psi_i\cdots\psi_n$, so we get that $i=n$, contradicting the assumption that the prefix
+is proper.
+
+Note that in proving this claim, we have proven precisely the unique reconstruction property.
+\qed
+
+Note that the reconstruction property holds true even when our strings use the custom that binary
+connectives are written as $(\alpha\circ\beta)$.
+
+Using the unique reconstruction property, we can define functions on formulas in a recursive
+manner.
+For example, we can define the {\it substring function}:
+$$ {\sl Sf}\pi=\set\pi\hbox{ for prime $\pi$},
+\qquad {\sl Sf}\s s\phi_1\cdots\phi_n=\bigcup_{i=1}^n{\sl Sf}\phi_i\cup
+\set{\s s\phi_1\cdots\phi_n} $$
+So ${\sl Sf}\phi$ is precisely all the subformulas of $\phi$.
+Note that ${\sl Sf}$ is well-defined precisely because of the unique reconstruction property: a
+formula cannot satisfy multiple conditions in the definition of ${\sl Sf}$ at once.
+
+More importantly than this example, we can assign truth to formulas:
+
+\bdefn
+
+    Let $w\colon V\longto\set{0,1}$ be a {\emphcolor valuation} -- a mapping of truth values to
+    each propositional variable.
+    Then we can extend $w$ to a function $w\colon{\cal F}_\ell\longto\set{0,1}$ by recursion as
+    follows:
+    \benum
+        \item For $\pi$ prime, $w\pi$ is already defined ($\pi\in V$).
+        \item If $\s s\in\ell$ and $\phi_1,\dots,\phi_n\in{\cal F}_\ell$ then
+        $$ w\s s\phi_1\cdots\phi_n = \s s(w\phi_1,\dots,w\phi_n) $$
+    \eenum
+
+\edefn
+
+So for example suppose $w(p)=1$ and $w(q)=0$ then
+$$ w(p\land q) = 0,\qquad w(p\land(q\lor\neg q)) = 1 $$
+
+Let $\var\phi$ denote all the variables in $V$ occurring in $\phi$.
+This can be defined recursively as follows:
+$$ \var\pi=\set\pi\hbox{ for $\pi$ prime},\qquad
+\var\s s\phi_1\cdots\phi_n = \bigcup_{i=1}^n\var\phi_i $$
+Then notice that $w\phi$ is dependent only on $w$'s values on $\var\phi$.
+That is, we have the following:
+
+\blemm
+
+    If $w,w'$ are two valuations such that $w(p)=w'(p)$ for all $p\in\var\phi$, then
+    $w\phi=w'\phi$.
+
+\elemm
+
+\Proof by formula induction.\qed
+
+Now, suppose that for every $n\in{\bb N}$ we have $p_n\in V$.
+Then we can define ${\cal F}^n_\ell=\set{\phi\in{\cal F}_\ell}[\var\phi\subseteq\set{1,\dots,n}]$,
+the set of all formulas whose variables are contained in $p_1,\dots,p_n$.
+
+\bdefn
+
+    We say that a formula $\phi\in{\cal F}^\ell_n$ {\emphcolor represents} a boolean function
+    $f\colon\set{0,1}^n\longto\set{0,1}$ if for every valuation $w$,
+    $$ w\phi = f(wp_1,\dots,wp_n) $$
+
+\edefn
+
+Since $w\phi$ is dependent only $wp_1,\dots,wp_n$, $f$ is uniquely determined: define
+$f(x_1,\dots,x_n)$ to be $w\phi$ where $w(p_i)=x_i$ and $w(p)$ arbitrary for all other variables.
+So we can denote $f$ by $\phi^{(n)}$ since it is unique.
+
+Notice that implication can be represented by $\neg(p_1\land\neg p_2)$, thus in the standard
+signature, we can use $(\alpha\to\beta)$ as a standin for $\neg(\alpha\land\neg\beta)$.
+Similarly $\oto$ can be represented by $(\alpha\to\beta)\land(\beta\to\alpha)$.
+
+\subsection{Logical Equivalence}
+
+\bdefn
+
+    Say two formulas $\alpha,\beta$ are {\emphcolor logically equivalent} if $w\alpha=w\beta$
+    for every valuation $w$.
+    Denote this by $\alpha\equiv\beta$.
+
+\edefn
+
+For example, $\alpha\equiv\neg\neg\alpha$.
+We can define $\top=p\lor\neg p$ and $\bot=p\land\neg p$ for $p\in V$.
+Notice that $w\top=1$ for all $w$, and $w\bot=0$, so $\top$ and $\bot$ represent truth and false
+respectively.
+
+The following can be easily verified:
+
+\centerline{\vbox{\tabskip=1cm
+\halign{&$#$\hfil\cr
+    \alpha\land(\beta\land\gamma)\equiv(\alpha\land\beta)\land\gamma &
+    \alpha\lor(\beta\lor\gamma)\equiv(\alpha\lor\beta)\lor\gamma \cr
+    \alpha\land\beta\equiv\beta\land\alpha &
+    \alpha\lor\beta\equiv\beta\lor\alpha\cr
+    \alpha\land\alpha\equiv\alpha &
+    \alpha\lor\alpha\equiv\alpha \cr
+    \alpha\land(\beta\lor\gamma)\equiv(\alpha\land\beta)\lor(\alpha\land\gamma) &
+    \alpha\lor(\beta\land\gamma)\equiv(\alpha\lor\beta)\land(\alpha\lor\gamma)\cr
+    \neg(\alpha\land\beta)\equiv\neg\alpha\lor\neg\beta &
+    \neg(\alpha\lor\beta)\equiv\neg\alpha\land\neg\beta\cr
+}}}
+
+Furthermore, $\alpha\lor\neg\alpha\equiv\top$ and $\alpha\land\neg\alpha\equiv\bot$ for all
+$\alpha$.
+For implication, we adopt the custom that it is right associative: that is,
+$\alpha\to\beta\to\gamma$ means $\alpha\to(\beta\to\gamma)$.
+Then notice the interesting equivalence:
+$$ \alpha_1\to\cdots\to\alpha_n\to\beta \equiv \bigwedge_{i=1}^n\alpha_i\to\beta $$
+where $\bigwedge_{i=1}^n\alpha_i=\alpha_1\wedge\cdots\wedge\alpha_n$.
+
+Notice that $\equiv$ is an equivalence relation.
+Furthermore it is a {\it congruence} (the precise definition of this will be given in a later
+lecture): for $\s s\in\ell$ and $\phi_1,\dots,\phi_n$ and $\psi_1,\dots,\psi_n$, if
+$\phi_i\equiv\psi_i$ for all $i$ then $\s s\phi_1\cdots\phi_n\equiv\s s\psi_1\cdots\psi_n$.
+Thus we get the following:
+
+\blemm[title=The Replacement Lemma]
+
+    Suppose $\alpha\equiv\alpha'$, and let $\phi\in{\cal F}_\ell$.
+    Let $\phi'$ result from $\phi$ by replacing one or more instances of $\alpha$ in $\phi$ with
+    $\alpha'$.
+    Then $\phi\equiv\phi'$.
+
+\elemm
+
+This will be proven in more generality in a later lecture.
+
+\subsection{Normal Forms}
+
+\bdefn
+
+    Prime formulas and their negations are called {\emphcolor literals}.
+    If $\alpha_i$ are conjunctions of literals, then $\bigvee_{i=1}^n\alpha_i$ is called a
+    {\emphcolor disjunctive normal form} (DNF).
+    Similarly if $\beta_i$ are disjunctions of literals, then $\bigwedge_{i=1}^n\beta_i$ is called
+    a {\emphcolor conjunctive normal form} (CNF).
+
+\edefn
+
+We get the following important theorem.
+
+\bthrm
+
+    Every boolean function $f\colon\set{0,1}^n\longto\set{0,1}$ can be represented by a DNF
+    $\alpha_f$ and a CNF $\beta_f$.
+
+\ethrm
+
+\Proof define $p^1=p$ and $p^0=\neg p$, then define
+$$ \alpha_f = \bigvee_{f\bar x=1}\bigwedge_{i=1}^n p_i^{x_i} $$
+Notice that if $w(p_i)=x_i$, then if $f\bar x=1$ then $\bigwedge_{i=1}^np_i^{x_i}$ is in the
+disjunction, and
+$$ w\bigwedge_{i=1}^np_i^{x_i} = \bigwedge_{i=1}^n wp_i^{x_i} = 1 $$
+Otherwise if $f\bar x=0$ then for every $f\bar y=1$, there is a $y_i\neq x_i$ and so
+$wp_i^{y_i}=0$, so every conjunction is not satisfied, and thus $\alpha_f$ is not.
+
+A similar proof goes for
+$$ \beta_f = \bigwedge_{f\bar x=0}\bigvee_{i=1}^np_i^{\neg x_i} \qed $$
+
+Note that by definition if two formulas represent the same boolean function then they are
+logically equivalent.
+Thus we have:
+
+\bcoro
+
+    Every formula is logically equivalent to a CNF and DNF.
+
+\ecoro
+
+\bdefn
+
+    A logical signature $\ell$ is {\emphcolor functional complete} if every boolean function can
+    be represented by a formula in ${\cal F}_\ell$.
+
+\edefn
+
+Since every boolean function can be represented by a DNF and CNF, this means that the standard
+signature is functional complete.
+Furtheremore, we know that $\land$ can be represented by $\lor$:
+$\alpha\land\beta\equiv\neg(\neg\alpha\lor\neg\beta)$, and vice versa.
+This means that $\set{{\land},\neg}$ and $\set{{\lor},\neg}$ are both functional complete.
+
