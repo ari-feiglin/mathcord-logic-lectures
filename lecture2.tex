@@ -1,0 +1,515 @@
+\rightline{Sources: A Concise Introduction to Mathematical Logic, Section 1, W. Rautenberg}
+
+We will need Zorn's Lemma for this lecture.
+Recall that it is equivalent to the axiom of choice, and it can be phrased as follows:
+
+\blemm[title=Zorn's Lemma]
+
+    Let $(X,<)$ be a poset, and let ${\cal H}\subseteq X$ be a set with the property that
+    every chain ${\cal C}\subseteq{\cal H}$ has an upper bound.
+    Then ${\cal H}$ has a maximal element.
+
+\elemm
+
+A chain is a set ${\cal C}$ such that for every $x\neq y\in{\cal C}$, either $x<y$ or $y<x$.
+
+\subsection{Logical Consequence}
+
+From now on, we write $w\vDash\phi$ to mean that $w\phi=1$, and we say $w$ {\it satisfies} $\phi$.
+For a set of formulas $X$, we write $w\vDash X$ if $w$ satisfies every formula in $X$.
+
+Notice that
+$$ w\vDash\alpha\land\beta \iff w\vDash\alpha\hbox{ and } w\vDash\beta,\qquad
+w\vDash\alpha\lor\beta \iff w\vDash\alpha\hbox{ or } w\vDash\beta,\qquad
+w\vDash\neg\alpha \iff w\nvDash\alpha $$
+Furthermore, for defined connectives like $\to$, $w\vDash\alpha\to\beta$ iff if $w\vDash\alpha$
+then $w\vDash\beta$, etc.
+
+\bdefn
+
+    Let $X$ be a set of formulas, and $\phi$ another formula (all over the same logical
+    signature).
+    Then $\phi$ is a {\emphcolor logical consequence} of $X$, denoted $X\vDash\phi$, if
+    $w\vDash X$ implies $w\vDash\phi$.
+
+\edefn
+
+Note that $\vDash$ is used both for the satisfaction and consequence relation.
+It will be understood from context which relation is meant.
+
+\bdefn
+
+    If $\varnothing\vDash\phi$ (meaning $w\vDash\phi$ for all $w$), then $\phi$ is a
+    {\emphcolor tautology}.
+    This is also denoted by $\vDash\phi$.
+    If no valuation satisfies $\phi$ it is called a {\emphcolor contradiction} (equivalently,
+    $\neg\phi$ is a tautology).
+
+\edefn
+
+For example $\alpha\lor\neg\alpha,\alpha\to\alpha,\alpha\oto\alpha$ are tautologies.
+$\alpha\land\neg\alpha,\alpha\oto\neg\alpha$ are contradictions.
+
+Now, important properties of the consequence relation are as follows:
+
+\medskip
+\centerline{\vbox{\halign{$#$\hfil\tabskip=1cm&({\it#\/})\hfil\cr
+\alpha\vDash\alpha & reflexivity\cr
+X\vDash\alpha\hbox{ and }X\subseteq Y\hbox{ then }Y\vDash\alpha & monotonicity\cr
+X\vDash Y\hbox{ and }Y\vDash\alpha\hbox{ then }X\vDash\alpha & transitivity\cr
+}}}
+\medskip
+
+Another interesting property is the {\it deduction theorem}: $X,\alpha\vDash\beta$ if and only if
+$X\vDash\alpha\to\beta$.
+Indeed: suppose $X,\alpha\vDash\beta$ then let $w\vDash X$, if $w\vDash\alpha$ then $w\vDash\beta$
+since $X,\alpha\vDash\beta$.
+Thus $X\vDash\alpha\to\beta$.
+And conversely, suppose $X\vDash\alpha\to\beta$, then if $w\vDash X$, if $w\vDash\alpha$ then
+$w\vDash\beta$ so for every $w\vDash X,\alpha$ also $w\vDash\beta$.
+
+\subsection{Gentzen Calculi}
+
+For this section we work over the functional complete logical signature $\set{\neg,{\land}}$.
+
+We now define what it means to {\it prove} something.
+This, in my opinion, is not the most natural method of defining this (we will get to a more
+natural method in the future), but it is quite useful.
+
+\bdefn
+
+    A {\emphcolor Gentzen calculus} $\vdash$ is a syntactic (as opposed to semantic) relation
+    between sets of formulas and formulas.
+    The Gentzen calculus is dictated by a set of rules of the form
+    $$ \gentzen{X_1\vdash\alpha_1 & \cdots & X_n\vdash\alpha_n}{X\vdash\alpha} $$
+    which tells us that if $X_i\vdash\alpha_i$ for all $i=1,\dots,n$, then $X\vdash\alpha$.
+    The top line is called the premises, and the bottom line is called the result.
+
+    Our Gentzen calculus for propositional logic has the following six basic rules:
+
+    \medskip
+    \centerline{\vbox{\openup2\jot
+    \halign{$(#)$\hfil\tabskip=.25cm&$\displaystyle#$\hfil\tabskip=2cm&%
+    $\displaystyle#$\hfil\tabskip=.25cm&$(#)$\hfil\cr
+    {\rm IS}&\gentzen{}{\alpha\vdash\alpha} &\gentzen{X\vdash\alpha}{X'\vdash\alpha}
+    \quad(X\subseteq X')&{\rm MR}\cr
+    \land1 & \gentzen{X\vdash\alpha,\beta}{X\vdash\alpha\land\beta} &
+    \gentzen{X\vdash\alpha\land\beta}{X\vdash\alpha,\beta} & \land2\cr
+    \neg1 & \gentzen{X\vdash\alpha,\neg\alpha}{X\vdash\beta} &
+    \gentzen{X,\alpha\vdash\beta & X,\neg\alpha\vdash\beta}{X\vdash\beta} & \neg2\cr
+    }}}
+    \medskip
+
+    IS stands for {\it initial sequent}, and MR stands for {\it monotonicity rule}.
+    $X\vdash\alpha$ is called a sequent.
+    A {\emphcolor derivation} is a sequence of sequents $(S_1;\dots;S_n)$ such that each $S_i$
+    can be derived from a basic rule with no premises, or can be derived from previous sequents
+    in the sequence by applications of any of the basic rules.
+    We write $X\vdash\alpha$ if there exists a derivation whose last sequent is $X\vdash\alpha$.
+
+\edefn
+
+For example, $\alpha,\beta\vdash\alpha\land\beta$ is derivable:
+$$ \pmatrix{\alpha\vdash\alpha & \alpha,\beta\vdash\alpha & \beta\vdash\beta &
+\alpha,\beta\vdash\beta & \alpha,\beta\vdash\alpha\land\beta\cr
+{\rm IS} & {\rm MR} & {\rm IS} & {\rm MR} & \land1} $$
+
+Let us prove some more useful rules
+
+\def\gproof#1{%
+    \vtop{%
+        \count2=0\relax%
+        \tabskip=0pt%
+        \halign{\global\advance\count2 by 1\relax\the\count2\quad##&$##$\hfil\tabskip=1cm&##\hfil\cr
+            #1\crcr
+        }%
+    }%
+}
+
+\tabskip=0pt plus 1fil
+{\openup1\jot\halign to \hsize{\hfil#\hfil\tabskip=2cm&#\tabskip=0pt plus 1fil\cr
+    $\gentzen{X,\neg\alpha\vdash\alpha}{X\vdash\alpha}$\cr
+    ($\neg$-elimination)&
+        \gproof{%
+            &X,\alpha\vdash\alpha& (IS), (MR)\cr
+            &X,\neg\alpha\vdash\alpha& supposition\cr
+            &X\vdash\alpha& $(\neg2)$\cr
+        }\cr
+    $\gentzen{X,\neg\alpha\vdash\beta,\neg\beta}{X\vdash\alpha}$\cr
+    (reductio ad absurdum)&
+        \gproof{%
+            &X,\neg\alpha\vdash\beta,\neg\beta & supposition\cr
+            &X,\neg\alpha\vdash\alpha & $(\neg1)$\cr
+            &X\vdash\alpha&$\neg$-elimination\cr
+        }\cr
+    $\gentzen{X\vdash\alpha\to\beta}{X,\alpha\vdash\beta}$\cr
+    ($\to$-elimination)&
+        \gproof{%
+            &X,\alpha,\neg\beta\vdash\alpha,\neg\beta& (IS), (MR)\cr
+            &X,\alpha,\neg\beta\vdash\alpha\land\neg\beta& $(\land1)$\cr
+            &X\vdash\neg(\alpha\land\neg\beta)& supposition\cr
+            &X,\alpha,\neg\beta\vdash\neg(\alpha\land\neg\beta)& (MR)\cr
+            &X,\alpha,\neg\beta\vdash\beta & $(\neg1)$ on $2$ and $4$\cr
+            &X,\alpha\vdash\beta& $\neg$-elimination\cr
+        }\cr
+    $\gentzen{X\vdash\alpha & X,\alpha\vdash\beta}{X\vdash\beta}$\cr
+    (cut rule)&
+        \gproof{%
+            &X,\neg\alpha\vdash\alpha & supposition, (MR)\cr
+            &X,\neg\alpha\vdash\neg\alpha & (IS), (MR)\cr
+            &X,\neg\alpha\vdash\beta & $(\neg1)$\cr
+            &X,\alpha\vdash\beta & supposition\cr
+            &X\vdash\beta & $(\neg2)$ on $3$ and $4$\cr
+        }\cr
+    $\gentzen{X,\alpha\vdash\beta}{X\vdash\alpha\to\beta}$\cr
+    ($\to$-introduction)&
+        \gproof{%
+            &X,\alpha\land\neg\beta,\alpha\vdash\beta & supposition, (MR)\cr
+            &X,\alpha\land\neg\beta\vdash\alpha & (IS), (MR), $(\land2)$\cr
+            &X,\alpha\land\neg\beta\vdash\beta & cut rule\cr
+            &X,\alpha\land\neg\beta\vdash\neg\beta & (IS), (MR), $(\land2)$\cr
+            &X,\alpha\land\neg\beta\vdash\alpha\to\beta & $(\neg1)$\cr
+            &X,\neg(\alpha\land\neg\beta)\vdash\alpha\to\beta & (IS), (MR)\cr
+            &X\vdash\alpha\to\beta & $(\neg2)$ on $5$ and $6$\cr
+        }\cr
+    $\gentzen{X\vdash\alpha,\alpha\to\beta}{X\vdash\beta}$\addtoindex{modus ponens}\cr
+    (modus ponens)&
+        \gproof{%
+            &X\vdash\alpha\to\beta & supposition\cr
+            &X,\alpha\to\beta & $\to$-elimination\cr
+            &X\vdash\alpha & supposition\cr
+            &X\vdash\beta & cut rule\cr
+        }\cr
+}}
+\medskip
+
+Notice that $\to$-elimination and introduction give us the {\it syntactic deduction theorem}:
+$X,\alpha\vdash\beta\iff X\vdash\alpha\to\beta$.
+
+Now suppose we have a Gentzen rule:
+$$ R\colon \gentzen{X_1\vdash\alpha_1 & \cdots & X_n\vdash\alpha_n}{X\vdash\alpha} $$
+then we say that a property of sequents ${\cal E}$ is {\it closed under $R$} if when
+$\E(X_1,\alpha_1),\dots,\E(X_n,\alpha_n)$ then $\E(X,\alpha)$.
+(Formally a sequent is $(X,\alpha)$, $X\vdash\alpha$ is anothe rway of writing it.)
+
+\blemm[title=Principle of Rule Induction]
+
+    Let $\E$ be a property of sequents closed under all the basic rules of $\vdash$.
+    Then $X\vdash\alpha$ implies $\E(X,\alpha)$.
+
+\elemm
+
+\Proof we will prove this for a general Gentzen calculus.
+We induct on the length of the derivation of $X\vdash\alpha$, which is $(S_1,\dots,S_n)$.
+If $n=1$ then $S_1=X\vdash\alpha$ and there is a premise-less basic rule of $\vdash$ which gives
+us $X\vdash\alpha$ and so $S_1$ is a basic rule itself, so $\E(X,\alpha)$.
+
+Now, suppose the derivation is $(S_1,\dots,S_n)$ for $n>1$.
+If $S_n$ is premise-less then we are done.
+Otherwise we have $\E(S_1),\dots,\E(S_{n-1})$ by induction (since a prefix of a derivation is a
+derivation itself).
+But $\E$ is closed under the basic rules, and $S_n$ is obtained from $S_1,\dots,S_{n-1}$ by the
+basic rules so $\E(S_n)$.
+\qed
+
+Notice that the property $\E(X,\alpha)=\quote{X\vDash\alpha}$ is closed under all the basic rules
+of $\vdash$.
+Thus we have shown the {\it soundness} of $\vdash$: $X\vdash\alpha\implies X\vDash\alpha$.
+
+\bthrm[title=Finiteness of $\vdash$]
+
+    If $X\vdash\alpha$ then $X_0\vdash\alpha$ for some finite $X_0\subseteq X$.
+
+\ethrm
+
+\Proof we define $\E(X,\alpha)=\quote{X_0\vdash\alpha\hbox{ for some finite $X_0\subseteq X$}}$
+and show it is closed under the basic rules of $\vdash$.
+\benum
+    \item IS: for $X=\set\alpha$ take $X_0=X$.
+    \item MR: if $X_0\vdash\alpha$ for finite $X_0\subseteq X$, then for any $X'\supseteq X$,
+    $X_0$ is still a finite subset of $X'$.
+    \item $\land1$: if $X\vdash\alpha,\beta$ then there is $X_0,X_1\subseteq X$ for which
+    $X_0\vdash\alpha$ and $X_1\vdash\beta$, so by MR $X_2=X_0\cup X_1$ has $X_2\vdash\alpha,\beta$
+    so $X_2\vdash\alpha\land\beta$, and $X_2$ is finite.
+    \item $\land2$: if $X_0\vdash\alpha\land\beta$ is finite, then $X_0\vdash\alpha,\beta$ is
+    still finite.
+    \item $\neg1$: similar to $\land2$.
+    \item $\neg2$: if $X_0,\alpha\vdash\beta$ and $X_1,\neg\alpha\vdash\beta$ using our
+    inductive hypothesis and MR, then using MR again we have $X_2,\alpha\vdash\beta$ and
+    $X_2,\neg\alpha\vdash\beta$ for $X_2=X_0\cup X_1$.
+    So then $X_2\vdash\beta$.
+    \qed
+\eenum
+
+\bdefn
+
+    A set of formulas is {\emphcolor inconsistent} (in $\vdash$) if $X\vdash\alpha$ for all
+    formulas $\alpha$.
+    Otherwise $X$ is {\emphcolor consistent}.
+
+\edefn
+
+Note that $X$ is inconsistent if and only if $X\vdash\bot$ by $\land2$ and $\neg1$.
+
+Now, we are interested in {\it maximal consistency}, meaning $X$ is consistent and any proper
+superset of $X$ is inconsistent.
+If $X$ is consistent, it is maximally consistent if and only if $\alpha\in X$ or $\neg\alpha\in X$
+for all $\alpha$.
+Indeed if $X$ is maximally consistent and $\alpha,\neg\alpha\notin X$ then $X,\alpha\vdash\bot$
+and $X,\neg\alpha\vdash\bot$ so $X\vdash\bot$ by $\neg2$.
+And obviously if $\alpha$ or $\neg\alpha$ are in $X$ for all $\alpha$, it is maximal.
+
+\blemm
+
+    $\vdash$ has the properties:
+    $$ C^+\colon X\vdash\alpha\iff X,\neg\alpha\vdash\bot,
+    \qquad C^-\colon X\vdash\neg\alpha\iff X,\alpha\vdash\bot $$
+
+\elemm
+
+Note that these can both be seen as a form of ``proof by contradiction'' where $C^-$ is necessary
+since $\vdash$ is semantic.
+
+\Proof suppose $X\vdash\alpha$ then $X,\neg\alpha\vdash\alpha$ by MR and since by MR as well we
+have $X,\neg\alpha\vdash\neg\alpha$, by $\neg1$ we have $X,\neg\alpha\vdash\bot$.
+Conversely, if $X,\neg\alpha\vdash\bot$ then $X,\neg\alpha\vdash\alpha$ and so by
+$\neg$-elimination we have $X\vdash\alpha$.
+$C^-$ is proven similarly.
+\qed
+
+\blemm[title=Lindenbaum's Theorem]
+
+    Every consistent $X$ can be extended to a maximally consistent $X'\supseteq X$.
+
+\elemm
+
+\Proof let us define
+$$ {\cal H} = \set{X'}[\hbox{$X'$ is consistent and $X'\supseteq X$}] $$
+clearly, a maximal element of ${\cal H}$ is precisely a maximally consistent extension of $X$.
+So we must show that ${\cal H}$ has a maximal element, which is of course done with Zorn's Lemma.
+Let ${\cal C}$ be a chain in ${\cal H}$, and let us define $Y=\bigcup{\cal C}$, we claim that
+$Y$ is an upper bound in ${\cal H}$ of ${\cal C}$.
+It is obviously an upper bound, all we need to show is that it is in ${\cal H}$, i.e. is
+consistent.
+
+Suppose not, so $Y\vdash\bot$.
+By finiteness, there is a finite $Y_0=\set{\alpha_1,\dots,\alpha_n}\subseteq Y$ such that
+$Y_0\vdash\bot$.
+Suppose $\alpha_i\in X'_i$ for $X'_i\in{\cal C}$.
+Since ${\cal C}$ is a chain, there must be some $X'_i$ which contains all other $X'_j$s.
+Thus $Y_0\subseteq X'_i$ and so by MR, $X'_i\vdash\bot$, contradicting $X'_i$'s consistency.
+\qed
+
+\blemm
+
+    A maximally consistent set $X$ has the property $X\vdash\neg\alpha\iff X\nvdash\alpha$ for all
+    $\alpha$.
+
+\elemm
+
+\Proof  if $X\vdash\neg\alpha$ then $X\vdash\alpha$ cannot be due to $X$'s consistency.
+Conversely if $X\nvdash\alpha$ then $\alpha\notin X$ so $\neg\alpha\in X$ so by IS and MR we have
+$X\vdash\neg\alpha$.
+
+\blemm
+
+    A maximally consistent set $X$ is satisfiable.
+
+\elemm
+
+\Proof we define $w\vDash p$ if and only if $X\vdash p$.
+Then we will show that $X\vdash\alpha\iff w\vDash\alpha$.
+We proceed by formula induction.
+For prime formulas, this is trivial.
+And so:
+$$ X\vdash\alpha\land\beta \iff X\vdash\alpha,\beta \iff w\vDash\alpha,\beta \iff
+w\vDash\alpha\land\beta $$
+and
+$$ X\vdash\neg\alpha \iff X\nvdash\alpha \iff w\nvDash\alpha \iff w\vDash\neg\alpha $$
+Thus $w$ models $X$, as required.
+\qed
+
+\bthrm[title=The Completeness Theorem]
+
+    $X\vdash\alpha$ if and only if $X\vDash\alpha$.
+
+\ethrm
+
+\Proof if $X\vdash\alpha$ by soundness, we have $X\vDash\alpha$.
+Now suppose $X\nvdash\alpha$ then $X,\neg\alpha$ is consistent (by $C^+$), and so it has a
+maximally consistent extension $Y$.
+This is satisfiable, so $X,\neg\alpha$ is satisfiable, meaning that $X\nvDash\alpha$.
+\qed
+
+Immediately, we get
+
+\bthrm[title=The Finiteness Theorem]
+
+    $X\vDash\alpha$ if and only if there is some finite $X_0\subseteq X$ for which
+    $X_0\vDash\alpha$.
+
+\ethrm
+
+and
+
+\bthrm[title=The Compactness Theorem]
+
+    $X$ is satisfiable if and only if every finite subset of $X$ is satisfiable.
+
+\ethrm
+
+\Proof if $X$ is satisfiable, so too is every subset.
+Conversely, if $X$ is unsatisfiable then $X\vDash\bot$ and by finiteness, $X_0\vDash\bot$ for some
+finite $X_0\subseteq X$.
+\qed
+
+\subsection{Applications of Compactness}
+
+We wish to prove the following lemma:
+
+\blemm[title=K\"onig's Tree Lemma]
+
+    Let $(V,\trileq,r)$ be an infinite directed tree (so $\trileq$ is an irreflexive binary
+    relation on $V$, $V$ is infinite, and $r\in V$ is a special node in the tree called the
+    {\it root} such that for every $a\in V$ there is precisely one path from $r$ to $a$).
+
+    Now suppose that there exists arbitrarily long finite paths originating from $r$, and each
+    $a\in V$ has finitely many successors, then there exists an infinite path originating from
+    the root.
+
+\elemm
+
+\Proof let us define ``layers'' of the tree inductively as follows: set $S_0=\set c$ and
+$$ S_{k+1}=\set{b\in V}[a\trileq b\hbox{ for some $a\in S_k$}] . $$
+Since each node has finitely many successors, each $S_k$ is finite.
+
+Now for each $a\in V$, we define a propositional variable $p_a$.
+We will now define a set of formulas $X$ which will say that there is an infinite path in $V$.
+This will be done by interpreting $p_a$ as saying that the path traverses through $a$.
+
+\benum
+    \item for each $k$, $\bigvee_{a\in S_k}p_a$, since the path must traverse through some element
+    in $S_k$.
+    \item for each $k$ and $a\neq b\in S_k$, $\neg(p_a\land p_b)$ since we want the path to
+    traverse through only one node in each layer.
+    \item $p_b\to p_a$ if $a\trileq b$ for $a,b\in V$, since if a node is in the path, so too
+    must its parent.
+\eenum
+
+Now since every finite subset $X_0\subseteq X$ contains finitely many $S_k$'s, it is satisfied by
+a finite path from the root through these layers.
+So $X$ is satisfiable, suppose $w\vDash X$.
+Then we create a path $\set{c_i}_{i\in{\bb N}}$ where $c_i$ is the node in $S_i$ which is
+satisfied by $w$ (i.e. $c_i$ is the unique node in $S_i$ for which $w\vDash p_{c_i}$).
+
+Now notice that $c_0=r$ and $c_i\trileq c_{i+1}$ for all $i$.
+This is because if $a$ is the predecessor of $b=c_{i+1}$ then $w\vDash p_a$ in lieu of $(3)$.
+So $\set{c_i}_{i\in{\bb N}}$ is an infinite path, as required.
+\qed
+
+\subsection{Hilbert Calculi}
+
+What is the more natural calculus I mentioned earlier?
+
+\bdefn
+
+    A {\emphcolor Hilbert calculus} $\vdash$ is one formed of
+    \benum
+        \item {\emphcolor axioms}: a set of formulas $\Lambda$, and
+        \item {\emphcolor rules of inference}: a set of relations $\Gamma$, where each
+        $R\in\Lambda$ is a relation $R\subseteq\Gamma^n\times\Gamma$ for $n>0$.
+    \eenum
+
+    A {\emphcolor proof} of $\phi$ under a set of formulas $X$ is a sequence of formulas
+    $(\phi_1,\dots,\phi_n=\phi)$ such that each $\phi_i$ is either in $X\cup\Lambda$ or there
+    exists a rule of inference $R\in\Gamma$ and for $\alpha_1,\dots,\alpha_k$ occurring in the
+    sequence before $\phi_i$, $R(\alpha_1,\dots,\alpha_k\implies\phi_i)$.
+    In such a case, we write $X\vdash\phi$.
+
+\edefn
+
+We can define a Hilbert calculus using the following axioms (which range over all
+$\alpha,\beta,\gamma$):
+
+\medskip
+\centerline{\vbox{\openup2\jot\halign{$#$\hfil\tabskip=.25cm&$#$\hfil\tabskip=2cm&%
+$#$\hfil\tabskip=.25cm&$#$\hfil\tabskip=0pt\cr
+\Lambda1 & (\alpha\to\beta\to\gamma)\to(\alpha\to\beta)\to\alpha\to\gamma &
+\Lambda2 & \alpha\to\beta\to\alpha\land\beta\cr
+\Lambda3 & \alpha\land\beta\to\alpha,\quad \alpha\land\beta\to\beta &
+\Lambda4 & (\alpha\to\neg\beta)\to\beta\to\neg\alpha\cr
+}}}
+\medskip
+
+And the rule of inference of modus ponens: $(\alpha,\alpha\to\beta)\implies\beta$.
+
+Now, we say that a property of formulas $\E$ is closed under a rule
+$R(\alpha_1,\dots,\alpha_n\to\beta)$, if $\E\alpha_1,\dots,\E\alpha_n$ implies $\E\beta$.
+So we can prove
+
+\blemm[title=Principle of Induction for Hilbert Calculi]
+
+    Let $X$ be a set of formulas and $\E$ a property of formulas $\E$.
+    Then if
+    \benum
+        \item $\E\alpha$ is true for all $\alpha\in X\cup\Lambda$ and
+        \item $\E$ is closed under all the rules of inference of the Hilbert calculus,
+    \eenum
+    $X\vdash\alpha$ implies $\E\alpha$.
+
+\elemm
+
+Using this we can show the following:
+
+\blemm
+
+    In our Hilbert calculus, if $X\vdash\alpha$ then $X\vDash\alpha$.
+
+\elemm
+
+and
+
+\blemm
+
+    A Hilbert calculus is reflexive ($\alpha\vdash\alpha$), monotonic ($X\vdash\alpha$ and
+    $X\subseteq X'$ implies $X'\vdash\alpha$), and transitive (if $X\vdash Y$ and $Y\vdash\alpha$
+    then $X\vdash\alpha$).
+
+\elemm
+
+And we can prove the following (in our Hilbert calculus):
+
+\blemm
+
+    \benum
+        \item $X\vdash\alpha\to\neg\beta$ implies $X\vdash\beta\to\neg\alpha$
+        \item $\vdash\alpha\to\beta\to\alpha$
+        \item $\vdash\alpha\to\alpha$
+        \item $\vdash\alpha\to\neg\neg\alpha$
+        \item $\vdash\beta\to\neg\beta\to\alpha$
+    \eenum
+
+\elemm
+
+\blemm[title=The Deduction Theorem]
+
+    $X,\alpha\vdash\beta$ iff $X\vdash\alpha\to\beta$.
+
+\elemm
+
+(Hint: one direction uses induction.)
+
+\blemm
+
+    $\vdash$ satisfies all the rules of our Gentzen calculus.
+
+\elemm
+
+(Hint: only $\neg2$ is complicated.)
+
+\bthrm[title=The Completeness Theorem]
+
+    $X\vdash\alpha\iff X\vDash\alpha$
+
+\ethrm
+

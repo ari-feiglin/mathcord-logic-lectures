@@ -1113,3 +1113,20 @@
 \def\hline{\noalign{\kern3pt\hrule\kern3pt}}
 \def\s#1{{\sf#1}}
 
+\newcount\mlcount
+\def\gentzen#1#2{%
+    \,\vcenter{%
+        \tabskip=.15cm\relax%
+        \mlcount=1\relax%
+        \offinterlineskip%
+        \halign{\strut\hfil${##}$\hfil&&\global\advance\mlcount by 1\relax\vrule\kern.15cm${##}$\cr%
+            #1\cr\noalign{\kern.1\jot\hrule\kern1\jot}%
+            \multispan{\the\mlcount}\hfil$#2$\hfil\cr
+        }%
+    }\,%
+}
+
+\def\E{{\cal E}}
+\def\quote#1{\hbox{``$#1$''}}
+
+\mathchardef\trileq="3443
