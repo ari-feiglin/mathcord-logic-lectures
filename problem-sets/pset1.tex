@@ -1,0 +1,85 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\centerline{\setfontandscale{bf}{20pt}Mathcord Mathematical Logic}
+\centerline{\setfontandscale{bf}{15pt}Problem Set 1}
+\centerline{Submission October 28}
+
+\bprob
+
+    \benum
+        \item Show that $\set{\neg,\to}$ is functional complete.
+        \item Show that $\lor$ can be represented in terms of $\to$ alone.
+        \item Show that any formula $\phi$ over the signature $\to$ has $w\phi=1$ for the
+        valuation $w$ which evaluates every variable as $1$.
+        \item Show that $\land$ cannot be represented in terms of $\to$ alone.
+        \item Show that $\oto$ cannot be represented in terms of $\to$ alone.
+    \eenum
+
+\eprob
+
+\bprob
+
+    We define the boolean {\it nand} connective, $\uparrow$, as follows:
+    $$ \pmatrix{1 & 1\cr 1 & 0} $$
+    and {\it nor}, $\downarrow$:
+    $$ \pmatrix{1 & 0\cr 0 & 0} $$
+    \benum
+        \item Verify that $\alpha\uparrow\beta\equiv\neg(\alpha\land\beta)$ and
+        $\alpha\downarrow\beta\equiv\neg(\alpha\lor\beta)$.
+        \item Show that both $\set\uparrow$ and $\set\downarrow$ are functional complete.
+        \item Show that if $\circ$ is a boolean connective and $\set\circ$ is functional
+        complete, $\circ\in\set{\uparrow,\downarrow}$.
+    \eenum
+
+\eprob
+
+\bprob
+
+    Let $\phi\to\psi$ be a tautology, then show that there exists a formula $\theta$ which uses
+    only variables common to both $\phi$ and $\psi$ (i.e.
+    $\var\theta\subseteq\var\phi\cap\var\psi$), such that both $\phi\to\theta$ and $\theta\to\psi$
+    are tautologies.
+
+\eprob
+
+\bprob
+
+    Let $\phi$ be a formula, we define its {\it dual}, $\phi^\delta$, recursively as follows:
+    $$ \pi^\delta = \pi \hbox{ for prime $\pi$},\qquad (\neg\alpha)^\delta=\neg\alpha^\delta,
+    \qquad (\alpha\land\beta)^\delta = (\alpha^\delta\lor\beta^\delta),\qquad
+    (\alpha\lor\beta)^\delta = (\alpha^\delta\land\beta^\delta) $$
+    Equivalently, it just substitutes all $\land$ in $\phi$ with $\lor$ and all $\lor$ with
+    $\land$.
+
+    Let $f\colon\set{0,1}^n\longto\set{0,1}$ be a boolean function, we define its {\it dual} to be
+    $$ f^\delta\bar x = \neg f(\neg\bar x) $$
+
+    \benum
+        \item Show that if $\alpha$ represents $f$, then $\alpha^\delta$ represents $f^\delta$.
+        \item Show that $f\mapsto f^\delta$ is a bijection on boolean functions.
+        \item Using the fact that every boolean function can be represented by a DNF, show that
+        every boolean function can be represented by a CNF.
+    \eenum
+
+\eprob
+
+\bprob
+
+    Let $\bar x=(x_1,\dots,x_n)$ and $\bar y=(y_1,\dots,y_n)$ be boolean vectors.
+    We write $\bar x\leq\bar y$ to mean $x_i\leq y_i$ for all $i=1,\dots,n$.
+    A boolean function $f$ is said to be {\it increasing} if $\bar x\leq\bar y$ implies
+    $f\bar x\leq f\bar y$.
+
+    Show that every increasing boolean function can be represented in the logical signature
+    $\set{{\land},{\lor}}$ and vice versa: every formula in this logical signature is increasing.
+
+\eprob
+
+\bye
+
