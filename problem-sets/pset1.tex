@@ -8,17 +8,16 @@
 
 \centerline{\setfontandscale{bf}{20pt}Mathcord Mathematical Logic}
 \centerline{\setfontandscale{bf}{15pt}Problem Set 1}
-\centerline{Submission October 28}
 
 \bprob
 
     \benum
         \item Show that $\set{\neg,\to}$ is functional complete.
-        \item Show that $\lor$ can be represented in terms of $\to$ alone.
+        \item Show that $\lor$ can be represented in the logical signature $\set\to$.
         \item Show that any formula $\phi$ over the signature $\to$ has $w\phi=1$ for the
         valuation $w$ which evaluates every variable as $1$.
-        \item Show that $\land$ cannot be represented in terms of $\to$ alone.
-        \item Show that $\oto$ cannot be represented in terms of $\to$ alone.
+        \item Show that $\land$ cannot be represented in the logical signature $\set\to$.
+        \item Show that $\oto$ cannot be represented in the logical signature $\set\to$.
     \eenum
 
 \eprob
@@ -26,9 +25,9 @@
 \bprob
 
     We define the boolean {\it nand} connective, $\uparrow$, as follows:
-    $$ \pmatrix{1 & 1\cr 1 & 0} $$
+    $$ 0\uparrow0 = 0\uparrow1 = 1\uparrow0 = 1,\qquad 1\uparrow1 = 0 $$
     and {\it nor}, $\downarrow$:
-    $$ \pmatrix{1 & 0\cr 0 & 0} $$
+    $$ 0\downarrow0 = 1,\qquad 0\downarrow1 = 1\downarrow0 = 1\downarrow1 = 0 $$
     \benum
         \item Verify that $\alpha\uparrow\beta\equiv\neg(\alpha\land\beta)$ and
         $\alpha\downarrow\beta\equiv\neg(\alpha\lor\beta)$.
@@ -80,6 +79,40 @@
     $\set{{\land},{\lor}}$ and vice versa: every formula in this logical signature is increasing.
 
 \eprob
+
+For the next two problems we will need the following definitions.
+Let $X$ be a set of formulas, and $\phi$ another formula.
+We say $\phi$ is a {\it consequence} of $X$, written $X\vDash\phi$, if $w\vDash X$ implies
+$w\vDash\phi$ for all valuations $w$.
+
+Furthermore, we say that a set of formulas $X$ is {\it independent} if for every $\phi\in X$,
+$X-\set\phi\nvDash\phi$.
+Equivalently, there is a valuation $w$ such that $w\vDash\psi$ for all $\psi\in X-\set\phi$ and
+$w\vDash\neg\phi$.
+
+Finally, we say that two sets of formulas, $X$ and $Y$, are {\it equivalent} if $w\vDash X$ if
+and only if $w\vDash Y$.
+
+\bprob
+
+    Suppose $\ell$ is functional complete and countable, and $V$ is countable (thus ${\cal F}$ is
+    countable).
+    Show that every countable set of formulas $X$ is equivalent to an independent set.
+
+\eprob
+
+\bprob
+
+    Prove the same thing from the previous problem, without assuming $X$ is countable.
+
+\eprob
+
+Problem 6, while doable, should be quite challenging.
+Problem 7 should be extremely challenging.
+
+\bigskip
+
+\centerline{\setfontandscale{bf}{15pt}Good Luck!}
 
 \bye
 
