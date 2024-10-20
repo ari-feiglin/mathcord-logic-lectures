@@ -1,0 +1,197 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\centerline{\setfontandscale{bf}{20pt}Mathcord Mathematical Logic}
+\centerline{\setfontandscale{bf}{15pt}Problem Set 1 Solution}
+
+\bprob
+
+    \benum
+        \item Show that $\set{\neg,\to}$ is functional complete.
+        \item Show that $\lor$ can be represented in the logical signature $\set\to$.
+        \item Show that any formula $\phi$ over the signature $\to$ has $w\phi=1$ for the
+        valuation $w$ which evaluates every variable as $1$.
+        \item Show that $\land$ cannot be represented in the logical signature $\set\to$.
+        \item Show that $\oto$ cannot be represented in the logical signature $\set\to$.
+    \eenum
+
+\eprob
+
+\benum
+    \item Clearly $\neg$ is representable in this signature, and so is $\lor$, by $\phi\lor\psi=\neg\phi\to\psi$.
+    Since $\set{{\neg},{\lor}}$ is functional complete, so too is this signature.
+    \item Suppose $\phi(x,y)\to\psi(x,y)$ represents $\lor$, so we must have $\phi(0,0)=1,\psi(0,0)=0$.
+    So let us take $\phi(x,y)=x\to y$ and $\psi(x,y)=(x\to y)\to y$.
+    We claim then that $\lor$ is represented by
+    $$ \theta(x,y) = (x\to y)\to((x\to y)\to y) $$
+    We must verify this: $\theta(0,0)=0,\theta(0,1)=1,\theta(1,0)=1,\theta(1,1)=1$ as required.
+    \item This is clear by formula induction.
+    For $\phi=\pi$ prime, $w\pi=1$ by definition.
+    And otherwise $\phi=\psi\to\theta$ we have $w\phi={\to}(w\psi,w\theta)$, which by our inductive assumption is ${\to}(1,1)=1$.
+    \item Suppose $\land$ was representable by $\to$, so by a formula of the form $\phi(x,y)\to\psi(x,y)$.
+    Thus we must have that
+    $$ \phi(0,0) = \phi(0,1) = \phi(1,0) = 1,\qquad \psi(0,0) = \psi(0,1) = \psi(1,0) = 0 $$
+    We can assume that $\phi(x,y)\to\psi(x,y)$ is the shortest representation.
+    Thus we must have $\phi(1,1)=0$ since otherwise $\phi$ is a tautology, and $\phi\to\psi\equiv\psi$, contradicting minimality.
+    But as showed in the previous subquestion, we cannot have $\phi(1,1)=0$.
+    \item Similarly suppose it is representable by a minimal formula $\phi(x,y)\to\psi(x,y)$.
+    Then we know $\phi(1,1)=1$ and $\psi(1,1)=1$ for the same reason as above.
+    Furthermore
+    $$ \phi(0,1) = \phi(1,0) = 1,\qquad \psi(0,1) = \psi(1,0) = 0 $$
+    Now, $\psi(0,0)=0$ since otherwise $\psi$ would represent $\oto$, contradicting minimality.
+    But then $\psi$ represents $\land$, which we just showed cannot be.
+\eenum
+
+\bprob
+
+    We define the boolean {\it nand} connective, $\uparrow$, as follows:
+    $$ 0\uparrow0 = 0\uparrow1 = 1\uparrow0 = 1,\qquad 1\uparrow1 = 0 $$
+    and {\it nor}, $\downarrow$:
+    $$ 0\downarrow0 = 1,\qquad 0\downarrow1 = 1\downarrow0 = 1\downarrow1 = 0 $$
+    \benum
+        \item Verify that $\alpha\uparrow\beta\equiv\neg(\alpha\land\beta)$ and
+        $\alpha\downarrow\beta\equiv\neg(\alpha\lor\beta)$.
+        \item Show that both $\set\uparrow$ and $\set\downarrow$ are functional complete.
+        \item Show that if $\circ$ is a boolean connective and $\set\circ$ is functional
+        complete, $\circ\in\set{\uparrow,\downarrow}$.
+    \eenum
+
+\eprob
+
+\benum
+    \item This is easily verified with a truth table.
+    \item For $\uparrow$ we will represent $\neg$ and $\land$.
+    For $\neg$, notice that it can be represented by $x\uparrow x\equiv\neg(x\land x)\equiv\neg x$.
+    And then since we can represent $\neg$, we can represent $\land$ by $\neg(x\uparrow y)$.
+
+    Similarly for $\downarrow$, we will represent $\neg$ and $\lor$.
+    $\neg$ can be represented by $x\downarrow x$, and $\lor$ by $\neg(x\downarrow y)$.
+    \item Suppose $\set{\circ}$ is functional complete.
+    Then we must have that ${\circ}(1,1)=0$ and ${\circ}(0,0)=1$ as an easy formula induction will show that otherwise no formula will map $(1,1)$ to $0$ or $(0,0)$ to $1$.
+    We now run down possibilities:
+    \benum
+        \item If ${\circ}(1,0)={\circ}(0,1)=0$ then $\circ$ is $\downarrow$.
+        \item If ${\circ}(1,0)={\circ}(0,1)=1$ then $\circ$ is $\uparrow$.
+        \item If ${\circ}(1,0)=1$ and ${\circ}(0,1)=0$ then ${\circ}$ is just ${\circ}(x,y)=\neg y$, so it will always be constant in the first input, and thus cannot be functional complete.
+        \item If ${\circ}(1,0)=0$ and ${\circ}(0,1)=1$ similar as before.
+    \eenum
+\eenum
+
+\bprob
+
+    Let $\phi\to\psi$ be a tautology, then show that there exists a formula $\theta$ which uses
+    only variables common to both $\phi$ and $\psi$ (i.e.
+    $\var\theta\subseteq\var\phi\cap\var\psi$), such that both $\phi\to\theta$ and $\theta\to\psi$
+    are tautologies.
+
+\eprob
+
+Suppose that
+$$ \var\phi = \set{x_1,\dots,x_n,y_1,\dots,y_k},\qquad \var\psi = \set{x_1,\dots,x_n,z_1,\dots,z_\ell} $$
+we then represent $\phi$ and $\psi$ in DNF:
+$$
+\phi \equiv \bigvee_{j=1}^{n_\phi}\parens{\bigwedge_{i=1}^nx_i^{\epsilon^\phi_{ij}}\wedge\bigwedge_{i=1}^ky_i^{\delta^\phi_{ij}}},\qquad
+\psi \equiv \bigvee_{j=1}^{n_\psi}\parens{\bigwedge_{i=1}^nx_i^{\epsilon^\psi_{ij}}\wedge\bigwedge_{i=1}^\ell z_i^{\delta^\psi_{ij}}}
+$$
+Then we define
+$$ \theta = \bigvee_{j=1}^{n_\phi}\bigwedge_{i=1}^nx_i^{\epsilon^\phi_{ij}} $$
+It is trivial to see that $\phi\to\theta$.
+Nowe we want to show that $\theta\to\psi$, suppose not then there is a valuation $w$ such that $w\theta=1$ and $w\psi=0$.
+Since $\phi\to\psi$, we must have $w\phi=0$.
+
+Now, since $w\theta=1$, there is a $1\leq j\leq n_\phi$ such that $w\vDash\bigwedge_{i=1}^nx_i^{\epsilon^\phi_{ij}}$.
+But $w\phi=0$ so there must be some $i$s with $1\leq i\leq k$ such that $wy_i^{\delta^\phi_{ij}}=0$.
+So let us simply alter $w$ to $w'$ such that $w'y_i^{\delta^\phi_{ij}}=1$ for these $i$s.
+
+Since all we've done is alter $y_i$s, we still have $w'\psi=0$ and $w'\theta=1$, but now $w'\phi=1$.
+But this contradicts $\phi\to\psi$ being a tautology.
+
+\bprob
+
+    Let $\phi$ be a formula, we define its {\it dual}, $\phi^\delta$, recursively as follows:
+    $$ \pi^\delta = \pi \hbox{ for prime $\pi$},\qquad (\neg\alpha)^\delta=\neg\alpha^\delta,
+    \qquad (\alpha\land\beta)^\delta = (\alpha^\delta\lor\beta^\delta),\qquad
+    (\alpha\lor\beta)^\delta = (\alpha^\delta\land\beta^\delta) $$
+    Equivalently, it just substitutes all $\land$ in $\phi$ with $\lor$ and all $\lor$ with
+    $\land$.
+
+    Let $f\colon\set{0,1}^n\longto\set{0,1}$ be a boolean function, we define its {\it dual} to be
+    $$ f^\delta\bar x = \neg f(\neg\bar x) $$
+
+    \benum
+        \item Show that if $\alpha$ represents $f$, then $\alpha^\delta$ represents $f^\delta$.
+        \item Show that $f\mapsto f^\delta$ is a bijection on boolean functions.
+        \item Using the fact that every boolean function can be represented by a DNF, show that
+        every boolean function can be represented by a CNF.
+    \eenum
+
+\eprob
+
+\benum
+    \item We prove this by formula induction.
+    For $\alpha=x$ then it represents $f(\bar x)=x$, and so $\alpha^\delta=x=\alpha$ and $f^\delta(\bar x)=x$ so $f^\delta=f$ as required.
+
+    For $\alpha=\phi\land\psi$, then $\alpha^\delta=\phi^\delta\lor\psi^\delta$.
+    Suppose $\alpha$ represents $f$ and $\phi,\psi$ represent $g_1,g_2$ respectively, this means $f(\bar x)=g_1(\bar x)\land g_2(\bar x)$.
+    Then
+    $$ w\alpha^\delta = (w\phi^\delta)\lor(w\psi^\delta) = g_1^\delta(w\bar x)\lor g_2^\delta(w\bar x) $$
+    while
+    $$ f^\delta(w\bar x) = \neg f(\neg w\bar x) = \neg(g_1(\neg w\bar x)\land g_2(\neg w\bar x)) = g_1^\delta(w\bar x)\lor g_2^\delta(w\bar x) $$
+    as required.
+
+    For $\alpha=\neg\phi$, then $\alpha^\delta=\neg\phi^\delta$.
+    Suppose $\alpha$ represents $f$ and $\phi$ represents $g$, then $f(\bar x)=\neg g(\bar x)$.
+    Then
+    $$ w\alpha^\delta = \neg w\phi^\delta = \neg g^\delta(w\bar x) = g(\neg w\bar x) $$
+    and
+    $$ f^\delta(w\bar x) = \neg f(\neg w\bar x) = \neg(\neg g(\neg w\bar x) = g(\neg w\bar x) $$
+    as required.
+
+    \item This map is an involution: $(f^\delta)^\delta=f$, so it is its own inverse and thus a bijection.
+
+    \item Note that the dual of a DNF is a CNF.
+    Let $f$ be a boolean function, it can be represented by a DNF $\phi$.
+    Then $f^\delta$ is represented by $\phi^\delta$, a CNF.
+    Since every boolean function can be written as $f^\delta$, every boolean function can be represented by a CNF.
+\eenum
+
+\bprob
+
+    Let $\bar x=(x_1,\dots,x_n)$ and $\bar y=(y_1,\dots,y_n)$ be boolean vectors.
+    We write $\bar x\leq\bar y$ to mean $x_i\leq y_i$ for all $i=1,\dots,n$.
+    A boolean function $f$ is said to be {\it increasing} if $\bar x\leq\bar y$ implies
+    $f\bar x\leq f\bar y$.
+
+    Show that every increasing boolean function can be represented in the logical signature
+    $\set{{\land},{\lor}}$ and vice versa: every formula in this logical signature is increasing.
+
+\eprob
+
+First we will show that every formula in this signature is increasing.
+We do so by formula induction.
+For prime formulas, these are just projections which are trivially increasing.
+
+Now notice that if $(x_1,x_2)\leq(y_1,y_2)$ then $x_1\land x_2\leq y_1\land y_2$ and $x_1\lor x_2\leq y_1\lor y_2$.
+This is easily verifiable.
+Now suppose $\alpha=\phi\land\psi$, then if $\bar x\leq\bar y$ then $\alpha(\bar x)=\phi(\bar x)\land\psi(\bar x)$ and $\phi(\bar x)\leq\phi(\bar y)$ and $\psi(\bar x)\leq\psi(\bar y)$ by induction.
+So we have that
+$$ \alpha(\bar x) = \phi(\bar x)\land\psi(\bar x) \leq \phi(\bar y)\land\psi(\bar y) $$
+as required.
+Similar for $\lor$.
+
+Let $f$ be an increasing boolean function, then it can be represented by
+$$ \phi = \bigvee_{f\bar x=1}\bigwedge_{x_i=1}p_i $$
+If $f(\bar x)=1$ then trivially $\phi(\bar x)=1$.
+
+And if $\phi(\bar x)=1$ then there is some $\bar y$ such that $f(\bar y)=1$ and
+$\bigwedge_{i=1,y_i=1}^nx_i=1$.
+Thus $y_i=1$ implies $x_i=1$.
+This means that $\bar y\leq\bar x$ and $f(\bar y)=1$ so $f(\bar x)=1$, as required.
+
+\bye
+
