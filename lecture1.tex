@@ -189,6 +189,12 @@ That is, we have the following:
 
 \Proof by formula induction.\qed
 
+Now, suppose $\phi$ is a formula with $\var\phi\subseteq\set{p_1,\dots,p_n}$, then we write
+$\phi(\bar p)$ for $\phi$.
+Now suppose $\phi=\phi(\bar x)$ and $w$ is a valuation with $wp_i=x_i$, then instead of writing
+$w\phi$, we can write $\phi(\bar x)$.
+This is well-defined by the above lemma.
+
 Now, suppose that for every $n\in{\bb N}$ we have $p_n\in V$.
 Then we can define ${\cal F}^n_\ell=\set{\phi\in{\cal F}_\ell}[\var\phi\subseteq\set{1,\dots,n}]$,
 the set of all formulas whose variables are contained in $p_1,\dots,p_n$.
