@@ -1,0 +1,100 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\centerline{\setfontandscale{bf}{20pt}Mathcord Mathematical Logic}
+\centerline{\setfontandscale{bf}{15pt}Problem Set 2}
+\centerline{Submission to mathcord.pset.submissions@gmail.com}
+
+\bprob
+
+    Prove the following:
+    $$ \gentzen{X\vdash\alpha\to\beta}{X,\alpha\vdash\beta},\qquad
+    \gentzen{X,\alpha\vdash\beta}{X\vdash\alpha\to\beta} $$
+
+\eprob
+
+\bprob
+
+    Complete section 2.4: prove claims 2.4.2 through 2.4.8.
+
+\eprob
+
+\bprob
+
+    A {\it substitution} is a mapping $\sigma\colon V\longto{\cal F}$, which we extend to
+    $\sigma\colon{\cal F}\longto{\cal F}$ using recursion:
+    $$ (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\qquad
+    (\neg\alpha)^\sigma = \neg\alpha^\sigma $$
+    For a set of formulas $X\subseteq{\cal F}$, define $X^\sigma=\set{\phi^\sigma}[\phi\in X]$.
+    Verify that $\vDash$ is {\it substitution invariant}:
+    $$ X\vDash\alpha \implies X^\sigma\vDash\alpha^\sigma $$
+    (Hint: for valuation $w$, define $w^\sigma$ such that
+    $w\vDash\alpha^\sigma\iff w^\sigma\vDash\alpha$)
+
+\eprob
+
+\bprob
+
+    Let ${\vdash}\subseteq\powsetof{\cal F}\times{\cal F}$ be a relation between sets of formulas
+    and formulas (we write $X\vdash\phi$).
+    $\vdash$ is a {\it consequence relation} if it satisfies:
+    \benum
+        \item Reflexivity: $\set\alpha\vdash\alpha$
+        \item Monotonicity: $X\subseteq X'$ and $X\vdash\alpha$ implies $X'\vdash\alpha$
+        \item Transitivity: $X\vdash Y$ ($X\vdash\phi$ for all $\phi\in Y$) and $Y\vdash\alpha$
+        implies $X\vdash\alpha$
+        \item Substitution invariance: $X\vdash\alpha\implies X^\sigma\vdash\alpha^\sigma$ (see
+        the previous question).
+    \eenum
+    A consequence relation is called {\it finitary} if $X\vdash\alpha$ implies there exists a
+    finite $X_0\subseteq X$ such that $X_0\vdash\alpha$.
+
+    Call a consequence relation $\vdash$ {\it inconsistent} if it is trivial: $\vdash\alpha$ for
+    all $\alpha$.
+    Otherwise $\vdash$ is consistent.
+
+    \benum
+        \item Let $\vdash$ be a consistent finitary consequence relation in
+        ${\cal F}_{\set{{\land},{\neg}}}$ which satisfies the properties $(\land1)$ through
+        $(\neg2)$.
+        Show that $\vdash$ is {\it maximally consistent} (meaning any consequence relation which
+        contains $\vdash$ is inconsistent).
+        \item Show that there is exactly one consistent consequence relation in
+        ${\cal F}_{\set{{\land},{\neg}}}$ which satisfies $(\land1)$ through $(\neg2)$.
+        \item Conclude that $\vdash$ (our Gentzen calculus) is complete.
+    \eenum
+
+\eprob
+
+\bprob
+
+    A {\it Horn formula} is one which is of one of the following forms:
+    $$ \alpha_0\lor\neg\alpha_1\lor\cdots\lor\alpha_n\hbox{\quad or\quad}
+    \neg\alpha_0\lor\neg\alpha_1\lor\cdots\lor\alpha_n\qquad\hbox{ for $n\geq0$, $\alpha_i$ prime}
+    $$
+    Let $w\colon V\longto\set{0,1}$ be a valuation, we can also equivalently view it as a set
+    $A\subseteq V$.
+    We say that a set of formulas $X$ is {\it preserved under intersections} if $A\vDash X$ and
+    $B\vDash X$ implies $A\cap B\vDash X$.
+    And $X$ is {\it preserved under arbitrary intersections} if $\set{A_i}_{i\in I}$ all model $X$
+    then so too does $B=\bigcap_{i\in I}A_i$.
+
+    Show that
+    \benum
+        \item $X$ is preserved under finite intersections if and only if it is closed under
+        arbitrary intersections.
+        \item $X$ is preserved under intersections if and only if it can be axiomatized (meaning
+        it has the same models as) by a set of Horn formulas.
+        \item A formula $\phi$ is preserved under intersections if and only if it is equivalent to
+        a Horn formula.
+    \eenum
+
+\eprob
+
+\bye
+
