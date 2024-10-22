@@ -33,8 +33,6 @@
     For a set of formulas $X\subseteq{\cal F}$, define $X^\sigma=\set{\phi^\sigma}[\phi\in X]$.
     Verify that $\vDash$ is {\it substitution invariant}:
     $$ X\vDash\alpha \implies X^\sigma\vDash\alpha^\sigma $$
-    (Hint: for valuation $w$, define $w^\sigma$ such that
-    $w\vDash\alpha^\sigma\iff w^\sigma\vDash\alpha$)
 
 \eprob
 
@@ -55,7 +53,7 @@
     finite $X_0\subseteq X$ such that $X_0\vdash\alpha$.
 
     Call a consequence relation $\vdash$ {\it inconsistent} if it is trivial: $\vdash\alpha$ for
-    all $\alpha$.
+    all $\alpha$ (equivalently $\vdash\bot$).
     Otherwise $\vdash$ is consistent.
 
     \benum
@@ -73,28 +71,71 @@
 
 \bprob
 
-    A {\it Horn formula} is one which is of one of the following forms:
-    $$ \alpha_0\lor\neg\alpha_1\lor\cdots\lor\alpha_n\hbox{\quad or\quad}
-    \neg\alpha_0\lor\neg\alpha_1\lor\cdots\lor\alpha_n\qquad\hbox{ for $n\geq0$, $\alpha_i$ prime}
-    $$
+    A {\it positive formula} is a formula in ${\cal F}_{\set{{\land},{\lor}}}$.
     Let $w\colon V\longto\set{0,1}$ be a valuation, we can also equivalently view it as a set
     $A\subseteq V$.
-    We say that a set of formulas $X$ is {\it preserved under intersections} if $A\vDash X$ and
-    $B\vDash X$ implies $A\cap B\vDash X$.
-    And $X$ is {\it preserved under arbitrary intersections} if $\set{A_i}_{i\in I}$ all model $X$
-    then so too does $B=\bigcap_{i\in I}A_i$.
+    Call a set of formulas $X$ {\it increasing} if $A\vDash X$ and $A\subseteq B$ implies
+    $B\vDash X$.
+    We say that $X$ is {\it equivalent} to $Y$ if $A\vDash X\iff A\vDash Y$.
 
     Show that
     \benum
-        \item $X$ is preserved under finite intersections if and only if it is closed under
-        arbitrary intersections.
-        \item $X$ is preserved under intersections if and only if it can be axiomatized (meaning
-        it has the same models as) by a set of Horn formulas.
-        \item A formula $\phi$ is preserved under intersections if and only if it is equivalent to
-        a Horn formula.
+        \item $A\subseteq B$ if and only if every positive sentence which holds in $A$ also holds
+        in $B$.
+        \item A consistent set of formulas $X$ is increasing iff it is equivalent to a set of
+        positive formulas.
+        \item A formula $\phi$ is increasing (meaning $\set\phi$ is) iff either $\phi$ is
+        equivalent to a positive formula, $\phi$ is a tautology, or $\neg\phi$ is a tautology.
     \eenum
 
 \eprob
+
+\vfill
+\centerline{Hints on next page}
+
+\break
+
+\setcounter{math counter}{2}
+
+\bhint
+
+    For valuation $w$, define $w^\sigma$ such that
+    $w\vDash\alpha^\sigma\iff w^\sigma\vDash\alpha$.
+
+\ehint
+
+\bhint
+
+    Let ${\vdash'}\supset{\vdash}$ be a proper extension of $\vdash$, so there exists $X,\phi$
+    where $X\nvdash\phi$ and $X\vdash'\phi$.
+    Let $Y$ be a maximal consistent extension of $X\cup\set{\neg\phi}$ for $\vdash$ (why does this
+    exist?).
+    Define a substitution $\sigma$ such that $p^\sigma=\top$ for $p\in Y$ and $p^\sigma=\bot$ for
+    $p\notin Y$.
+    Then show
+    $$ \alpha\in Y\implies\vdash\alpha^\sigma,\qquad
+    \alpha\notin Y\implies\vdash\neg\alpha^\sigma $$
+
+\ehint
+
+\bhint
+
+    \benum
+        \item One direction uses formula induction, the other is trivial (since prime formulas are
+        positive).
+        \item Define $X^+=\set{\phi\hbox{ positive}}[X\vdash\phi]$, we claim that $X$ and $X^+$
+        are equivalent.
+        Obviously $A\vDash X\implies A\vDash X^+$, so let $A\vDash X^+$, define
+        $$ Y = \set{\neg\phi}[\phi\hbox{ positive},A\vDash\neg\phi] $$
+        Then show that $X\cup Y$ is consistent, and conclude from that that $A\vDash X$.
+        \item Suppose $\phi$ is satisfiable, then let $X=\set{\psi}[\phi\vdash\psi]$.
+        Then $X$ is equivalent to a set of positive sentences $X^+$.
+        Show then that there are formulas $\psi_1,\dots,\psi_n\in X^+$ such that
+        $\set{\psi_1,\dots,\psi_n}\vDash\phi$.
+        Conclude that $\phi$ is equivalent to their conjunction.
+    \eenum
+
+\ehint
 
 \bye
 
