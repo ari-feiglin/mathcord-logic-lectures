@@ -1,0 +1,166 @@
+\subsection{Signatures and Structures}
+
+Let us recall a few definitions that should be familiar with you all.
+\benum
+    \item A {\it group} is a mathematical structure $(G,\circ)$ which satisfies certain axioms.
+    \item A {\it field} is a mathematical structure $(F,\cdot,+,0,1)$ which satisfies certain
+    axioms.
+    \item A {\it poset} is a mathematical structure $(X,<)$ which satisfies certain axioms.
+\eenum
+We see that in all these examples, our structures are of the form $(A,\dots)$ where $\dots$ is a
+collection of operators, constants, and relations.
+Let us generalize this notion:
+
+\bdefn
+
+    An {\emphcolor (extralogical) signature} is a set $\sigma$ consisting of three types of
+    symbols: operator symbols, constant symbols, and relation symbols.
+    For each operator symbol and relation symbol, we assign it a value
+    $\ar\s s\in{\bb N}_{\geq1}$.
+
+\edefn
+
+Note that in general, we can think of constants as $0$-ary functions (ones which take no inputs
+and give an output).
+
+A signature is called {\it algebraic} if it has no relation symbols.
+
+\bdefn
+
+    Let $\sigma$ be a signature, then a {\emphcolor $\sigma$-structure} is an object ${\cal A}$
+    consisting of the following:
+    \benum
+        \item A set $A$, called the {\emphcolor domain} of ${\cal A}$ (also denoted
+        ${\rm dom}{\cal A}$).
+        \item For every operator symbol $f\in\sigma$, an operator
+        $f^{\cal A}\colon A^{\ar f}\longto A$.
+        \item For every constant symbol $c\in\sigma$, a constant $c^{\cal A}\in A$.
+        \item For every relation symbol $r\in\sigma$, a relation $r^{\cal A}\subseteq A^{\ar r}$.
+    \eenum
+    These objects $\s s^{\cal A}$ are called the {\emphcolor interpretations} of the symbols
+    $\s s$.
+
+\edefn
+
+For a $\sigma$-structure with domain $A$, we often write ${\cal A}=(A,\sigma^{\cal A})$.
+For example, given the signature $\set{+,\cdot,0,1}$, we can define the structure
+${\cal N}=({\bb N},+^{\cal N},\cdot^{\cal N},0^{\cal N},1^{\cal N})$, where all the symbols are
+interpreted canonically.
+We will also often be lazy and lose the exponent and just write the symbol.
+
+\bdefn
+
+    Let ${\cal A}$ be a $\sigma$-structure, and $B\subseteq A$ such that
+    \benum
+        \item For every $c\in\sigma$, $c^{\cal A}\in B$,
+        \item For every $f\in\sigma$ and $\bar b\in B$, $f\bar b\in B$.
+    \eenum
+    Then we can define the {\emphcolor substructure} of ${\cal A}$ whose domain is $B$ and whose
+    interpretations of the symbols are as follows:
+    $$ c^{\cal B} = c^{\cal A},\qquad f^{\cal B} = f^{\cal A}\bigl|_{\cal B},\qquad
+    r^{\cal B} = r^{\cal A}\cap B^{\ar r} $$
+
+\edefn
+
+Notice something interesting though: ${\cal Z}=({\bb Z},+)$ is a group, but
+${\cal N}=({\bb N},+)$ is a substructure of ${\cal Z}$ and is not a group.
+But on the other hand all the substructures of ${\cal Z}=({\bb Z},+,-,0)$ are groups.
+So the signature matters!
+
+\bdefn
+
+    Let $\sigma_0\subseteq\sigma$ be signatures, and ${\cal A}$ a $\sigma$-structure.
+    We define the {\emphcolor $\sigma_0$-reduct} of ${\cal A}$ to be the $\sigma_0$-structure
+    ${\cal A}_0={\cal A}\bigl|_{\sigma_0}$ where for every $\s s\in\sigma$,
+    $\s s^{{\cal A}_0}=\s s^{\cal A}$.
+
+\edefn
+
+\subsection{Homomorphisms and Isomorphisms}
+
+\bdefn
+
+    Let ${\cal A},{\cal B}$ be $\sigma$-structures.
+    Then $h\colon\c A\longto\c B$ is a {\emphcolor homomorphism} if for all $f,c,r\in\sigma$ and
+    $\bar a\in A^n$:
+    $$ hf^{\cal A}\bar a = f^{\cal A}h\bar a,\qquad
+    hc^{\cal A}=c^{\cal B},\qquad r^{\cal A}\bar a\implies r^{\cal B}h\bar a,\qquad
+    \hbox{where $h\bar a=(ha_1,\dots,ha_n)$} $$
+    If we replace the third condition with $r^{\cal B}h\bar a$ if and only if there exists a
+    $\bar a_0\in A^n$ such that $h\bar a=h\bar a_0$ and $r^{\cal A}\bar a_0$:
+    $$ r^{\cal B}h\bar a \iff (\exists\bar a_0\in A^n)(h\bar a=h\bar a_0\hbox{ and }
+    r^{\cal A}\bar a_0 $$
+    then $h$ is a {\emphcolor strong homomorphism}.
+    An injective strong homomorphism is an {\emphcolor embedding}, and a surjective embedding is
+    an {\emphcolor isomorphism}.
+
+\edefn
+
+Note that for an embedding, we have that
+$$ r^{\cal B}h\bar a \iff (\exists\bar a_0\in A^n)(h\bar a=h\bar a_0\hbox{ and }r^{\cal A}\bar a_0
+\iff r^{\cal A}\bar a $$
+since $h\bar a=h\bar a_0\iff\bar a=\bar a_0$.
+
+If there is an isomorphism $\iota\colon{\cal A}\longto{\cal B}$ then $\iota^{-1}$ is also an
+isomorphism.
+We write ${\cal A}\cong{\cal B}$ to say that the two structures are isomorphic.
+This is an equivalence relation.
+
+Furthermore, if $h\colon\c A\longto\c B$ then $f\c A\subseteq\c B$ is a substructure.
+
+\bdefn
+
+    A {\emphcolor congruence} on a $\sigma$-structure ${\cal A}$ is an equivalence relation
+    $\treta$ such that for all $f\in\sigma$ and $\bar a,\bar b\in A^n$:
+    $$ \bar a\treta\bar b \implies f^{\cal A}\bar a\treta f^{\cal A}\bar b $$
+    where $\bar a\treta\bar b$ means $a_i\treta b_i$ for $i=1,\dots,n$.
+
+\edefn
+
+Notice that if $\theta$ is a congruence on ${\cal A}$, then we can define a $\sigma$-structure
+on the quotient $A/\theta$.
+We will denote this structure by $\c A/\theta$, and we interpret the symbols of $\sigma$ as
+$$ c^{\c A/\theta} = c^{\c A}/\theta,\qquad
+f^{\c A/\theta}(\bar a/\theta) = (f^{\c A}\bar a)/\theta,\qquad
+r^{\c A/\theta}(\bar a/\theta) \iff (\exists\bar a_0\treta\bar a)r^{\c A}\bar a_0 $$
+where $a/\theta$ is the equivalence class of $a$, and
+$\bar a/\theta=(a_1/\theta,\dots,a_n/\theta)$.
+Since $\theta$ is a congruence, these are all well-defined.
+
+Notice that if $h\colon\c A\longto\c B$ is a homomorphism, then we can define its {\it kernel}
+to be the congruence $\ker h$:
+$$ a\kerel hb \iff ha=hb $$
+Verifying that this is a congruence is easy.
+
+\bthrm[title=The First Isomorphism Theorem]
+
+    \benum
+        \item Let $\c A$ be a $\sigma$-structure and $\theta$ a congruence on $\c A$.
+        Then $\pi\colon\c A\longto\c A/\theta$ defined by $a\mapsto a/\theta$ is a surjective
+        strong homomorphism.
+        \item Let $h\colon\c A\longto\c B$ be a strong homomorphism, then
+        $\tilde h\colon\c A/\ker h\longto h\c A$ defined by $a/\ker h\mapsto ha$ is an
+        isomorphism and $h=\tilde h\circ\pi$.
+        In other words, $\c A/\ker h\cong h\c A$.
+    \eenum
+
+\ethrm
+
+\Proof verify yourself.\qed
+
+So we get the classic commutative diagram (where $h$ is surjective):
+
+\bigskip
+\centerline{
+\def\diagrowbuf{1cm}
+\def\diagcolbuf{1cm}
+\drawdiagram{
+    $\c A$ & $\c A/\ker h$\cr
+           & $\c B$\cr
+}{
+    \diagarrow{from={1,1}, to={1,2}, text=$\tilde h$, y distance=.25cm}
+    \diagarrow{from={1,1}, to={2,2}, text=$h$, x distance=-.25cm}
+    \diagarrow{from={1,2}, to={2,2}, text=$\pi$, x distance=.25cm}
+}}
+\bigskip
+
