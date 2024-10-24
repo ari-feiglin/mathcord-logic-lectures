@@ -164,3 +164,156 @@ So we get the classic commutative diagram (where $h$ is surjective):
 }}
 \bigskip
 
+\subsection{The Syntax of First-Order Logic}
+
+In order to discuss logic, we need a language to talk about.
+Namely, we want to define first order logic.
+This language will be built in two steps.
+
+First, let us define $V=\set{v_1,v_2,\dots}$.
+Unlike in propositional logic, our set of variables is kept constant and global.
+
+\bdefn
+
+    Let $\sigma$ be an extralogical signature, we define $\sigma$-terms recursively
+    as follows:
+    \benum
+        \item $c\in\sigma$ and $x\in V$ are both terms.
+        \item if $f\in\sigma$ and $t_1,\dots,t_n$ are terms, then so is $ft_1\cdots t_n$.
+    \eenum
+    Let the set of terms be denoted ${\cal T}_\sigma$ (we omit the subscript generally).
+
+\edefn
+
+${\cal T}_\sigma$ is an algebraic structure over the reduct of $\sigma$ to only function and
+constant symbols.
+For $c\in\sigma$, $c^{\c T_\sigma}=c$ (the string).
+And for $f\in\sigma$ and $t_1,\dots,t_n\in\c T_\sigma$, $f(t_1,\dots,t_n)=ft_1\cdots t_n$.
+Thus we call $\c T_\sigma$ the {\it term algebra} over $\sigma$.
+
+There is of course a notion of term induction: let $\c E$ be a property of strings such that
+\benum
+    \item for $c\in\sigma$ and $x\in V$, both $\c Ec$ and $\c Ex$,
+    \item for $f\in\sigma$ and $t_1,\dots,t_n\in\c T_\sigma$, $\c Et_1,\dots,\c Et_n$ implies
+            $\c Eft_1\cdot t_n$
+\eenum
+then $\c Et$ for all terms $t$.
+
+There is also a unique reconstruction property for terms:
+$$ ft_1\cdots t_n = fs_1\cdots s_n \implies t_1=s_1,\dots,t_n=s_n $$
+Thus we can define functions on terms by term recursion.
+Namely, we wish to define $\var t$, the set of variables in $t$.
+This is done by
+$$ \var c=\varnothing,\qquad \var x=\set x,\qquad \var ft_1\cdots t_n=\bigcup_{i=1}^n\var t_i $$
+
+\bdefn
+
+    Let $\sigma$ be an extralogical signature, we define $\sigma$-formulas recursively as follows:
+    \benum
+        \item if $s,t\in\c T_\sigma$ then $s\eq t$ is a formula.
+                We use the boldface $\eq$ to distinguish the equality symbol and the
+                metatheoretical equality.
+        \item if $r\in\sigma$ and $t_1,\dots,t_n\in\c T_\sigma$ then $rt_1\cdots t_n$ is a
+                formula.
+        \item If $\alpha,\beta$ are formulas and $x$ is a variable, then $(\alpha\land\beta),
+                \neg\alpha,\forall x\alpha$ are formulas.
+    \eenum
+    Formulas constructed by $(1)$ and $(2)$ are called {\emphcolor atomic formulas}.
+    Let us denote the set of $\sigma$-formulas by $\c L_\sigma$.
+    We will identify $\sigma$ with $\c L_\sigma$, and just write $\c L$ in place of $\sigma$.
+
+\edefn
+
+$\forall$ is called the {\it universal quantifier}.
+
+Note that we take only the logical signature $\ell=\set{{\neg},{\land}}$.
+We do not lose any generality since it is complete.
+We can abbreviate other logical symbols as before:
+$(\alpha\lor\beta)=\neg(\neg\alpha\land\neg\beta)$, etc.
+
+We can also define the {\it existential quantifier} $\exists$ by
+$\exists x\alpha=\neg\forall x\neg\alpha$.
+
+So for example, over the signature $\set{{+},{<},1}$, we can write the formulas
+$$ \forall x(x<x+1),\qquad \forall x\exists y(y\eq x+x),\qquad \forall x\exists y(x\eq2y) $$
+
+There is of course also formula induction and the unique formula reconstruction property.
+Thus we can define formulas by recursion on formulas.
+For example $\var\phi$:
+$$ \var s\eq t = \var s\cup\var t,\qquad \var rt_1\cdots t_n = \bigcup_{i=1}^n\var t_i,
+\quad \var\forall x\alpha = \set x\cup\var\alpha $$
+
+Let us examine the following formula (over the necessary signature):
+$$ \forall x\,x+y\eq0 $$
+here we quantify over $x$, but $y$ remains unquantified.
+Similarly, we can examine
+$$ (\forall x\exists y\,x+y\eq0)\land(\forall x\,x<y) $$
+which does have a quantifier which quantifies over $y$, but it also contains a $y$ which is not
+within the scope of a quantifier of $y$.
+We call such variables {\it free}.
+
+We define $\free\phi$ to be the set of free variables of $\phi$:
+$$ \free\alpha = \var\alpha\hbox{ for atomic $\alpha$},\qquad
+\free(\alpha\land\beta)=\free\alpha\cup\free\beta,\qquad
+\free\neg\alpha=\free\alpha,\qquad \free\forall x\alpha = \free\alpha-\set\alpha $$
+We write $\phi=\phi(\bar x)$ to mean that $\phi$ is a variable with free variables in
+$\set{x_1,\dots,x_n}$, i.e. $\free\phi\subseteq\set{x_1,\dots,x_n}$.
+Similarly for a term $t$, we write $t=t(\bar x)$ to mean $\var t\subseteq\set{x_1,\dots,x_n}$.
+
+\subsection{The Semantics of First-Order Logic}
+
+Just like we evaluated propositional formulas using a valuation, we will define a {\it first-order
+model} which will be used to evaluate formulas.
+
+\bdefn
+
+    A {\emphcolor model} is a pair $(\c A,w)$ consisting of an $\c L$-structure $\c A$
+    and a valuation $w\colon V\longto A$ (we denote the image of $x$ under $w$ by $x^w$).
+    We denote $r^{\c A},f^{\c A},c^{\c A},x^w$ by $r^{\c M},f^{\c M},c^{\c M},x^{\c M}$.
+
+\edefn
+
+Let $\c M$ be a model and $t\in\c T$ a term.
+Then we can define the value of $t$ in $\c M$, which we denote $t^{\c M}$, recursively:
+\benum
+    \item $c^{\c M}$ and $x^{\c M}$ are already defined,
+    \item $(ft_1\cdots t_n)^{\c M}=f^{\c M}(t_1^{\c M},\dots,t_n^{\c M})$.
+\eenum
+
+We define the satisfaction relation as follows: for a model $\c M$ and formula $\phi$
+we write $\c M\vDash\phi$ to mean that $\phi$ is valid under $\c M$.
+Formally, we do so recursively:
+
+\centerline{\vbox{\halign{$#$\hfil\tabskip=.25cm&${}\iff\quad#$\hfil\tabskip=0pt\cr
+\c M\vDash s\eq t & s^{\c M}=t^{\c M}\cr
+\c M\vDash r\bar t & r^{\c M}\bar t^{\c M}\cr
+\c M\vDash(\alpha\land\beta) & \c M\vDash\alpha\hbox{ and }\c M\vDash\beta\cr
+\c M\vDash\neg\alpha & \c M\nvDash\alpha\cr
+\c M\vDash\forall x\alpha & \c M^a_x\vDash\alpha\hbox{ for all $a\in A$}\cr
+}}}
+
+For the last clause, we define $\c M^a_x$ to be the model whose valuation is $w^a_x$ which agrees
+with $w$ except on $x$, which it defines to be $a$.
+We can similarly define $\c M^{\bar a}_{\bar x}$ which maps $\bar x$ to $\bar a$.
+Then writing $\forall\bar x\phi$ for $\forall x_1\cdots\forall x_n\phi$,
+$$ \c M\vDash\forall\bar x\phi \iff \c M^{\bar a}_{\bar x}\vDash\phi\hbox{ for all $\bar a\in A$}
+$$
+We can also see easily that $\c M\vDash\alpha\lor\beta$ iff $\c M\vDash\alpha$ or
+$\c M\vDash\beta$, etc.
+And $\c M\vDash\exists x\phi\iff\c M^a_x\vDash\phi$ for some $a\in A$.
+
+\bdefn
+
+    \benum
+        \item A formula or set of formulas is {\emphcolor satisfiable} if it has a $\c L$-model.
+        \item A formula is a {\emphcolor tautology} if it is satisfied by every $\c L$-model.
+        \item $\alpha,\beta\in\c L$ are {\emphcolor equivalent}, $\alpha\equiv\beta$, if for all
+        $\c L$-models $\c M$, $\c M\vDash\alpha\iff\c M\vDash\beta$.
+        \item If $\c A$ is an $\c L$-structure, then $\c A\vDash\phi$ iff $\c M\vDash\phi$ for
+                every model over $\c A$.
+        \item Let $X$ be a set of formulas, then $X\vDash\phi$ iff $\c M\vDash\phi$ for all
+                $\c M\vDash X$ (this defines the consequence relation).
+    \eenum
+
+\edefn
+
