@@ -1,0 +1,210 @@
+\input pdfToolbox
+
+\setlayout{horizontal margin=2cm, vertical margin=2cm}
+\parindent=0pt
+\parskip=3pt plus 2pt minus 2pt
+
+\input preamble
+
+\centerline{\setfontandscale{bf}{20pt}Mathcord Mathematical Logic}
+\centerline{\setfontandscale{bf}{15pt}Problem Set 2 Solution}
+
+\bprob
+
+    Prove the following:
+    $$ \gentzen{X\vdash\alpha\to\beta}{X,\alpha\vdash\beta},\qquad
+    \gentzen{X,\alpha\vdash\beta}{X\vdash\alpha\to\beta} $$
+
+\eprob
+
+For the first proof:
+\benum
+    \item $X,\alpha,\neg\beta\vdash\alpha\land\neg\beta$ by IS, MR, and $\land1$
+    \item $X,\alpha,\neg\beta\vdash\neg(\alpha\land\neg\beta)$ by supposition and MR
+    \item $X,\alpha,\neg\beta\vdash\beta$ by $\neg1$
+    \item $X,\alpha\vdash\beta$ by $\neg$-elimination
+\eenum
+
+For the second proof:
+\benum
+    \item $X,\alpha\land\neg\beta,\alpha\vdash\beta$ by supposition and MR
+    \item $X,\alpha\land\neg\beta\vdash\alpha$ by IS, MR, and $\land2$
+    \item $X,\alpha\land\neg\beta\vdash\beta$ by the cut rule
+    \item $X,\alpha\land\neg\beta\vdash\neg\beta$ by IS, MR, and $\land2$
+    \item $X,\alpha\land\neg\beta\vdash\alpha\to\beta$ by $\neg1$
+    \item $X,\neg(\alpha\land\neg\beta)\vdash\alpha\to\beta$ by IS, MR
+    \item $X\vdash\alpha\to\beta$ by $\neg2$
+\eenum
+
+\bprob
+
+    Complete section 2.4: prove claims 2.4.2 through 2.4.8.
+
+\eprob
+
+See A Concise Introduction to Mathematical Logic, Wolfgang Rautenberg, Section 1.6.
+
+\bprob
+
+    A {\it substitution} is a mapping $\sigma\colon V\longto{\cal F}$, which we extend to
+    $\sigma\colon{\cal F}\longto{\cal F}$ using recursion:
+    $$ (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\qquad
+    (\neg\alpha)^\sigma = \neg\alpha^\sigma $$
+    For a set of formulas $X\subseteq{\cal F}$, define $X^\sigma=\set{\phi^\sigma}[\phi\in X]$.
+    Verify that $\vDash$ is {\it substitution invariant}:
+    $$ X\vDash\alpha \implies X^\sigma\vDash\alpha^\sigma $$
+
+\eprob
+
+Let $w$ be a valuation, we define $w^\sigma$ such that $w\vDash\alpha^\sigma$ iff $w^\sigma\vDash\alpha$.
+In order for this to hold for prime formulas, we must have $w^\sigma\vDash\pi$ iff $w\vDash\pi^\sigma$, this defines the valuation.
+Now we must verify that this identity holds for compound formulas, this is easy.
+
+So
+$$ w\vDash X^\sigma \implies w^\sigma\vDash X \implies w^\sigma\vDash\alpha \implies w\vDash\alpha^\sigma $$
+thus $X^\sigma\vDash\alpha^\sigma$, as required.
+
+\bprob
+
+    Let ${\vdash}\subseteq\powsetof{\cal F}\times{\cal F}$ be a relation between sets of formulas
+    and formulas (we write $X\vdash\phi$).
+    $\vdash$ is a {\it consequence relation} if it satisfies:
+    \benum
+        \item Reflexivity: $\set\alpha\vdash\alpha$
+        \item Monotonicity: $X\subseteq X'$ and $X\vdash\alpha$ implies $X'\vdash\alpha$
+        \item Transitivity: $X\vdash Y$ ($X\vdash\phi$ for all $\phi\in Y$) and $Y\vdash\alpha$
+        implies $X\vdash\alpha$
+        \item Substitution invariance: $X\vdash\alpha\implies X^\sigma\vdash\alpha^\sigma$ (see
+        the previous question).
+    \eenum
+    A consequence relation is called {\it finitary} if $X\vdash\alpha$ implies there exists a
+    finite $X_0\subseteq X$ such that $X_0\vdash\alpha$.
+
+    Call a consequence relation $\vdash$ {\it inconsistent} if it is trivial: $\vdash\alpha$ for
+    all $\alpha$ (equivalently $\vdash\bot$).
+    Otherwise $\vdash$ is consistent.
+
+    \benum
+        \item Let $\vdash$ be a consistent finitary consequence relation in
+        ${\cal F}_{\set{{\land},{\neg}}}$ which satisfies the properties $(\land1)$ through
+        $(\neg2)$.
+        Show that $\vdash$ is {\it maximally consistent} (meaning any consequence relation which
+        contains $\vdash$ is inconsistent).
+        \item Conclude that $\vdash$ (our Gentzen calculus) is complete (is equal to $\vDash$).
+    \eenum
+
+\eprob
+
+\benum
+    \item let ${\vdash}'\supset\vdash$ be a proper extension of $\vdash$, so there exist $X,\phi$ such that $X\nvdash\phi$ and $X\vdash'\phi$.
+    Let $Y$ be a maximal consistent extension of $X\cup\set{\neg\phi}$ for $\vdash$.
+    $Y$ exists since $X\cup\set{\neg\phi}$ is consistent, and we can apply Zorn's lemma to $\c H=\set{Y\supseteq X}[Y\hbox{ is consistent}]$: let $\c C\subseteq\c H$ be a chain, then $\bigcup\c C$ is
+    consistent.
+    For if $\c C\vdash\bot$, then since $\vdash$ is finitary there exist $\phi_1,\dots,\phi_n\in\c C$ such that $\phi_1,\dots,\phi_n\vdash\bot$.
+    But since $\c C$ is a chain, there exists a $C\in\c C$ such that $\phi_1,\dots,\phi_n\in C$ and thus $C\in\c C\subseteq\c H$ is inconsistent, in contradiction.
+
+    Now let us define a substitution $\sigma$ where $\pi^\sigma=\top$ for $\pi\in Y$ and $\pi^\sigma=\bot$ otherwise.
+    We claim
+    $$ \alpha\in Y\implies{}\vdash\alpha^\sigma,\qquad \alpha\notin Y\implies{}\neg\alpha^\sigma $$
+    We prove this by induction.
+    For prime $\pi$ this is trivial (since $\vdash$ satisfies $\land1$ through $\neg2$ we can show that $\vdash\top$ and $\vdash\neg\bot$, etc.).
+
+    Now for $\neg\alpha\in Y$, we have $\alpha\notin Y$ since $Y$ is consistent and so $\vdash\neg\alpha^\sigma$ as required.
+    And for $\neg\alpha\notin Y$, we have $\alpha\in Y$ because it is maximally consistent, and so on.
+
+    For $\vdash'$ we have that $Y\vdash'\phi,\neg\phi$ and since $Y$ is maximally consistent, $\phi,\neg\phi\in Y$.
+    Thus $\vdash'\phi^\sigma,\neg\phi^\sigma$.
+    Thus $\vdash'$ is inconsistent.
+
+    \item Let $\vdash$ be the smallest finitary consequence relation to satisfy $\land1$ through $\neg2$, this is our Gentzen calculus.
+    Since ${\vdash}\subseteq{\vDash}$, and by the previous subquestion, $\vdash$ is maximal, ${\vdash}={\vDash}$.
+
+    \item This follows
+\eenum
+
+\bprob
+
+    A {\it positive formula} is a formula in ${\cal F}_{\set{{\land},{\lor}}}$.
+    Let $w\colon V\longto\set{0,1}$ be a valuation, we can also equivalently view it as a set
+    $A\subseteq V$.
+    Call a set of formulas $X$ {\it increasing} if $A\vDash X$ and $A\subseteq B$ implies
+    $B\vDash X$.
+    We say that $X$ is {\it equivalent} to $Y$ if $A\vDash X\iff A\vDash Y$.
+
+    Show that
+    \benum
+        \item $A\subseteq B$ if and only if every positive sentence which holds in $A$ also holds
+        in $B$.
+        \item A consistent set of formulas $X$ is increasing iff it is equivalent to a set of
+        positive formulas.
+        \item A formula $\phi$ is increasing (meaning $\set\phi$ is) iff either $\phi$ is
+        equivalent to a positive formula, $\phi$ is a tautology, or $\neg\phi$ is a tautology.
+    \eenum
+
+\eprob
+
+\benum
+    \item Let $A\subseteq B$, then by simple formula induction if $\phi$ is positive then $A\vDash\phi\implies B\vDash\phi$.
+    And conversely, if $A\vDash\phi\implies B\vDash\phi$ for all positive $\phi$, in particular it holds for prime $\phi=\pi$, and thus $\pi\in A\implies\pi\in B$.
+
+    \item Suppose $X$ is increasing.
+    Define $X^+=\set{\phi\hbox{ positive}}[X\vdash\phi]$, then $X$ and $X^+$ are equivalent.
+    Obviously if $A\vDash X$ then $A\vDash X^+$.
+    Conversely, let $A\vDash X^+$ and define
+    $$ Y = \set{\neg\phi}[\phi\hbox{ positive},\ A\vDash\neg\phi] $$
+    then $X\cup Y$ is consistent, otherwise there exist $\phi_1,\dots,\phi_n$ positive such that $A\vDash\neg\phi_i$ and $X,\neg\phi_1,\dots,\neg\phi_n$ is inconsistent.
+    So
+    $$ X\vdash\bigwedge_{i=1}^n\neg\phi_i\to\bot \equiv \bigvee_{i=1}^n\phi_i $$
+    So then $\bigvee_{i=1}^n\phi_i\in X^+$, and so $A\vDash\bigvee_{i=1}^n\phi_i$, and thus $A\vDash\phi_i$ for some $i$.
+    But $\neg\phi_i\in Y$ and so $A\nvDash\phi_i$ in contradiction.
+
+    Thus $X\cup Y$ is consistent, and has a model $B\vDash X\cup Y$.
+    Since $B\cup Y$, $A\nvDash\phi\implies B\nvDash\phi$ for positive $\phi$, thus $B\vDash\phi\implies A\vDash\phi$ for positive $\phi$.
+    By the previous subquestion, this means $B\subseteq A$, and since $X$ is increasing this means $A\vDash X$ as required.
+
+    Conversely, we showed that positive formulas are increasing and thus so is a set of positive formulas, and surely then a set equivalent to a set of positive formulas.
+
+    \item Suppose neither $\phi$ nor $\neg\phi$ are tautologies.
+    Then define $X=\set{\psi}[\phi\vdash\psi]$, then $X$ is increasing since $\phi\in X$.
+    So $A\vDash X$ means $A\vDash\phi$ and so if $A\subseteq B$ then $B\vDash\phi$ as well, and thus $B\vDash\psi$ for all $\psi\in X$.
+    So by the previous subquestion, $X\equiv X^+$ for some set of positive formulas $X^+$.
+
+    Now, $X\vDash\phi$ (since $\phi\in X$), and thus $X^+\vDash\phi$, and by finitness, there exist $\psi_1,\dots,\psi_n\in X^+$ such that $\psi_1,\dots,\psi_n\vDash\phi$.
+    Now we claim that $\phi\equiv\bigwedge_{i=1}^n\phi_i$, we clearly have $\bigwedge_{i=1}^n\phi_i\vDash\phi$.
+    ANd $\bigwedge_{i=1}^n\phi_i\in X^+$ so if $A\vDash\phi$ then $A\vDash X^+$ and so $A\vDash\bigwedge_{i=1}^n\phi_i$.
+    So we have $\phi\vDash\bigwedge_{i=1}^n\phi_i$ as well, as required.
+\eenum
+
+\bprob
+
+    A {\it graph} is a pair $G=(V,E)$ where $E$ is an irreflexive binary relation on $V$.
+    Elements of $V$ are called {\it vertices} and pairs $(u,v)\in E$ are called {\it edges}.
+    If $G$ is a graph, an {\it $n$-coloring} is a map $\pi\colon V\longto\set{1,\dots,n}$ such that for every edge $(u,v)\in E$ the vertices $u$ and $v$ are not given the same color:
+    $$ (u,v)\in E\implies \pi(u)\neq\pi(v) $$
+    We say that $G$ is {\it $n$-colorable} if there exists an $n$-coloring on it.
+    A {\it subgraph} of $G=(V,E)$ is a graph $G'=(V',E')$ where $V'\subseteq V$ and $E'=E\cap(V')^2$.
+
+    Show that an infinite graph $G$ (meaning $V$ is infinite) is $n$-colorable iff every finite subgraph is $n$-colorable.
+
+\eprob
+
+Obviously if $G$ is $n$-colorable, so is every subgraph of $G$.
+Now, suppose every finite subgraph of $G$ is $n$-colorable.
+We will define a set of propositional formulas as follows: for every $v\in V$ and $i\in\set{1,\dots,n}$ define a propositional variable $p_{v,i}$.
+Now define $X$ to consist of all the formulas of the form
+$$ (1)\quad \bigvee_{i=1}^np_{v,i}\hbox{ for all $v\in V$},\qquad
+(2)\quad p_{v,i}\to\neg p_{v,j}\hbox{ for $v\in V,i\neq j$},\qquad
+(3)\quad p_{u,i}\to\neg p_{v,i}\hbox{ for $(u,v)\in E$} $$
+Now, if $w\vDash X$ then define $\pi\colon V\longto\set{1,\dots,n}$ where $\pi(v)=i$ if and only if $w\vDash p_{v,i}$.
+By formulas $(1)$, every $v\in V$ has an image, and by $(2)$ this image is unique.
+Thus $\pi$ is well-defined.
+By $(3)$ it is a coloring.
+
+So all we need to show is that $X$ is satisfiable.
+Let $X'\subseteq X$ be a finite subset, then we can define a finite subgraph $G'$ to consist of all vertices whose symbols occur in $X'$.
+Then we can extend $X'$ to $X''$ which contains all the formulas of type $(1),(2),(3)$ for vertices occurring in $G'$.
+This is satisfiable because $G'$ is $n$-colorable (take an $n$-coloring of $G'$, $\pi$, and define $w\vDash p_{v,i}$ if and only if $\pi(v)=i$).
+
+Thus $X$ is finitely satisfiable, and thus satisfiable by the compactness theorem.
+
+\bye

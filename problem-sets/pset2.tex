@@ -62,9 +62,7 @@
         $(\neg2)$.
         Show that $\vdash$ is {\it maximally consistent} (meaning any consequence relation which
         contains $\vdash$ is inconsistent).
-        \item Show that there is exactly one consistent consequence relation in
-        ${\cal F}_{\set{{\land},{\neg}}}$ which satisfies $(\land1)$ through $(\neg2)$.
-        \item Conclude that $\vdash$ (our Gentzen calculus) is complete.
+        \item Conclude that $\vdash$ (our Gentzen calculus) is complete (is equal to $\vDash$).
     \eenum
 
 \eprob
@@ -87,6 +85,19 @@
         \item A formula $\phi$ is increasing (meaning $\set\phi$ is) iff either $\phi$ is
         equivalent to a positive formula, $\phi$ is a tautology, or $\neg\phi$ is a tautology.
     \eenum
+
+\eprob
+
+\bprob
+
+    A {\it graph} is a pair $G=(V,E)$ where $E$ is an irreflexive binary relation on $V$.
+    Elements of $V$ are called {\it vertices} and pairs $(u,v)\in E$ are called {\it edges}.
+    If $G$ is a graph, an {\it $n$-coloring} is a map $\pi\colon V\longto\set{1,\dots,n}$ such that for every edge $(u,v)\in E$ the vertices $u$ and $v$ are not given the same color:
+    $$ (u,v)\in E\implies \pi(u)\neq\pi(v) $$
+    We say that $G$ is {\it $n$-colorable} if there exists an $n$-coloring on it.
+    A {\it subgraph} of $G=(V,E)$ is a graph $G'=(V',E')$ where $V'\subseteq V$ and $E'=E\cap(V')^2$.
+
+    Show that an infinite graph $G$ (meaning $V$ is infinite) is $n$-colorable iff every finite subgraph is $n$-colorable.
 
 \eprob
 
