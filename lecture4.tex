@@ -1,0 +1,126 @@
+\subsection{Elementary Equivalence}
+
+\bdefn
+
+    Two $\c L$-formulas, $\alpha,\beta$ are {\emphcolor elementarily equivalent} if $\c M\vDash\alpha\iff\c M\vDash\beta$.
+    This is written $\alpha\equiv\beta$.
+
+\edefn
+
+There are a few equivalent formulations of equivalence: $\vDash\alpha\oto\beta$, $\alpha\vDash\beta$ and $\beta\vDash\alpha$, etc.
+
+Notice that $\c L$ forms an algebra over the signature $\set{{\land},{\neg},{\forall x}}[x\in\Var]$.
+So we can talk about congruences over $\c L$, those are relations $\approx$ such that
+$$ \alpha\approx\alpha',\ \beta\approx\beta' \implies \alpha\land\beta\approx\alpha'\land\beta',\ \neg\alpha\approx\neg\alpha',\ \forall x\alpha\approx\forall x\alpha' $$
+As is easily verified, $\equiv$ is a congruence.
+
+\blemm[title=The Replacement Lemma]
+
+    Let $\approx$ be a congruence on $\c L$, and $\alpha\approx\alpha'$.
+    Let $\phi\in\c L$ and $\phi'$ be obtained by substituting one or more occurances of $\alpha$ with $\alpha'$ in $\phi$.
+    Then $\phi\approx\phi'$.
+
+\elemm
+
+\Proof by formula induction.\qed
+
+\bdefn
+
+    Let $\c A$ be an $\c L$-structure.
+    Then $\alpha,\beta\in\c L$ are {\emphcolor equivalent in $\c A$} if $\c A,w\vDash\alpha\iff\c A,w\vDash\beta$ for all valuations $w$.
+    We denote this $\alpha\equiv_{\c A}\beta$.
+
+\edefn
+
+This too is a congruence, is equivalent to $\c A\vDash\alpha\oto\beta$, and ${\equiv}\subseteq{\equiv}_{\c A}$.
+
+Trivially, an arbitrary intersection of congruences is a congruence.
+So if $\b K$ is a class of $\c L$-structures, $\equiv_{\b K}=\bigcap_{\c A\in\b K}{\equiv}_{\c A}$ is also a congruence.
+
+The following is a list of simple equivalences:
+\benum
+    \item $\forall x(\alpha\land\beta)\equiv(\forall x\alpha)\land(\forall x\beta)$, $\exists x(\alpha\lor\beta)\equiv(\exists x\alpha)\lor(\exists x\beta)$,
+    \item $\forall x\forall y\alpha\equiv\forall y\forall x\alpha$, $\exists x\exists y\alpha\equiv\exists y\exists x\alpha$,
+    \mtext If $x\notin\free\beta$ then
+    \item $\forall x(\alpha\lor\beta)\equiv(\forall x\alpha)\lor\beta$, $\exists x(\alpha\land\beta)\equiv(\exists x\alpha)\land\beta$,
+    \item $\forall x\beta\equiv\beta\equiv\exists x\beta$,
+    \item $\forall x(\alpha\to\beta)\equiv(\exists x\alpha)\to\beta$, $\exists x(\alpha\to\beta)\equiv(\forall x\alpha)\to\beta$.
+\eenum
+
+A non-trivial equivalence is that of {\it renaming bound variables}: if $y\notin\var\alpha$ then
+$$ \forall x\alpha \equiv \forall y\parens{\alpha\frac yx},\qquad \exists x\alpha\equiv\exists y\parens{\alpha\frac yx} $$
+Indeed
+$$ \c M\vDash\forall y\parens{\alpha\frac yx} \iff \c M^a_y\vDash\alpha\frac yx\hbox{ for all $a$} \iff (\c M^a_y)^{y^{\c M^a_y}}_x\vDash\alpha \iff (\c M^a_y)^a_x\vDash\alpha $$
+since $y\notin\var\alpha$, its valuation has no effect on its satisfaction and thus
+$$ \iff \c M^a_x\vDash\alpha \iff \c M\vDash\forall x\alpha $$
+
+\bdefn
+
+    A {\emphcolor prenex normal form} (PNF) is a formula of the form $\Q_1x_1\cdots\Q_nx_n\phi$ where $\Q_i\in\set{{\forall},{\exists}}$ are quantifiers and $\phi$ is quantifier-free.
+
+\edefn
+
+\bthrm
+
+    Every formula $\phi$ is equivalent to a formula in prenex normal form.
+
+\ethrm
+
+\Proof for each $\Q x$ let us consider the number of symbols $\neg,\land$ occurring to the left of $\Q x$, and let $s\phi$ be the sum of these numbers.
+$\phi$ is clearly a PNF iff $s\phi=0$.
+We can iteratively decrement $s\phi$ while remaining elementarily equivalent, and thus conclude that $\phi$ is equivalent to a PNF.
+So suppose $s\phi>0$, then there exists some $\Q x$ with a symbol $\neg$ or $\land$ before it.
+Then apply one of the following:
+$$ \neg\forall x\equiv\exists x\neg\alpha,\quad \neg\exists x\alpha\equiv\forall x\neg\alpha,\quad \beta\land\Q x\alpha\equiv\Q y\parens{\beta\land\alpha\frac yx} $$
+for $y\notin\var\alpha,\var\beta$.
+\qed
+
+\subsection{Logical Consequence}
+
+\bdefn
+
+    As before, for a set of $\c L$-formuals $X$ and a formula $\phi$, we write $X\vDash\phi$ to mean $\c M\vDash X\implies\c M\vDash\phi$ for all $\c L$-models $\c M$.
+    This is called the {\emphcolor consequence relation}.
+
+\edefn
+
+We can state some properties about logical consequence:
+\benum
+    \item $\gentzen{X\vDash\forall x\alpha}{X\vDash\alpha\frac tx}$ for $\alpha,\frac tx$ collision-free.
+    \item $\gentzen{X\vDash\alpha\frac sx,s\eq t}{X\vDash\alpha\frac tx}$ for $\alpha,\frac tx$, $\alpha,\frac sx$ collision-free.
+    \item $\gentzen{X,\beta\vDash}{X,\forall x\beta\vDash\alpha}$ (anterior generalization).
+    \item $\gentzen{X\vDash\alpha}{X\vDash\forall x\alpha}$ for $x\notin\free X$ (posterior generalization).
+    \item $\gentzen{X,\beta\vDash\alpha}{X,\exists x\beta\vDash\alpha}$ for $x\notin\free X,\free\alpha$ (anterior particularization).
+    \item $\gentzen{X\vDash\alpha\frac tx}{X\vDash\exists x\alpha}$ for $\alpha,\frac tx$ collision-free (posterior particularization).
+\eenum
+
+\subsection{A Gentzen Calculus for FOL}
+
+We define a Gentzen calculus for first-order logic, which has the following basic rules:
+
+\centerline{\vbox{\openup2\jot
+\halign{$(#)$\hfil\tabskip=.25cm&$\displaystyle#$\hfil\tabskip=2cm&$\displaystyle#$\hfil\tabskip=.25cm&$(#)$\hfil\cr
+{\rm IS} & \gentzen{}{\alpha\vdash\alpha} & \gentzen{}{t\eq t} & {\rm ES}\cr
+\multispan4\hfil$\gentzen{X\vdash\alpha}{X'\vdash\alpha}\quad(X\subseteq X')$\hfil$({\rm MR})$\cr
+\land1 & \gentzen{X\vdash\alpha,\beta}{X\vdash\alpha\land\beta} & \gentzen{X\vdash\alpha\land\beta}{X\vdash\alpha,\beta} & \land2\cr
+\neg1 & \gentzen{X\vdash\alpha,\neg\alpha}{X\vdash\beta} & \gentzen{X,\beta\vdash\alpha & X,\neg\beta\vdash\alpha}{X\vdash\alpha} & \neg2\cr
+\forall1 & \gentzen{X\vdash\forall x\alpha}{X\vdash\alpha\frac tx}\quad(\alpha,\frac tx\hbox{ collision-free}) &
+\gentzen{X\vdash\alpha\frac yx}{X\vdash\forall x\alpha}\quad(y\notin\free X\cup\var\alpha) & \forall2\cr
+= & \gentzen{X\vdash s\eq t,\alpha\frac sx}{X\vdash\alpha\frac tx}\quad(\alpha\hbox{ prime})\cr
+}}}
+
+Note that every first-order language $\c L$ defines a calculus, which we can denote with a subscript: $\vdash_{\c L}$.
+This is an extension of our propositional logic Gentzen calculus, and thus all the rules we proved there hold here as well.
+
+As before, since this is a Gentzen calculus, we can induct on it.
+Doing so, we can prove
+
+\bprop
+
+    Suppose $\c L$'s signature is $\sigma$.
+    If $X\vdash_{\c L}\alpha$, then there exists a finite $X_0\subseteq X$ and a finite signature $\sigma_0\subseteq\sigma$ such that $X_0\vdash_{\c L_0}\alpha$ (where $\c L_0=\c L_{\sigma_0}$).
+
+\eprop
+
+Of course we must have that $X_0,\alpha\subseteq\c L_0$.
+
