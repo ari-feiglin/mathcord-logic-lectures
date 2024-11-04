@@ -1,3 +1,102 @@
+\subsection{Substitutions}
+
+A {\it (global) substitution} is a function $\sigma\colon\Var\longto\c T$ which substitutes variables with terms.
+We can then expand this to a function $\sigma\colon\c T\longto\c T$ recursively as follows:
+$$ c^\sigma = c,\qquad x^\sigma = \sigma(x),\qquad (f\bar t)^\sigma = ft_1^\sigma\cdots t_n^\sigma $$
+and finally to a function $\sigma\colon\c L\longto\c L$ recursively by
+$$ (t\eq s)^\sigma = t^\sigma\eq s^\sigma,\qquad (r\bar t)^\sigma = r\bar t^\sigma,\qquad (\alpha\land\beta)^\sigma = \alpha^\sigma\land\beta^\sigma,\qquad (\neg\alpha)^\sigma=\neg\alpha^\sigma $$
+finally for $\phi=\forall x\alpha$ we define $\phi^\sigma=\forall x\alpha^{\sigma'}$ where $\sigma'$ agrees with $\sigma$ for $y\in\Var-\set x$ and $x^{\sigma'}=x$.
+
+
+If $\sigma$ maps only $x_1\mapsto t_1,\dots,x_n\mapsto t_n$ and keeps all other variables constant, we write $\phi\frac{t_1,\dots,t_n}{x_1,\dots,x_n}$ for $\phi^\sigma$.
+Such a substitution is called a {\it simultaneous substitution}, and if $n=1$ a {\it simple substitution}.
+Notice that we can compose substitutions, but be careful -- this notation can be dangerous!
+Note that in general we don't have
+$$ \phi\frac{t_1,\dots,t_n}{x_1,\dots,x_n} = \phi\frac{t_1}{x_1}\cdots\frac{t_n}{x_n} $$
+take for example $t_1=x_2$ and $t_2=x_1$.
+Then $\frac{t_1,t_2}{x_1,x_2}$ swaps $x_1$ and $x_2$, but $\frac{t_1}{x_1}\,\frac{t_2}{x_2}$ will just swap all $x_2$ with $x_1$.
+We need a condition: indeed
+$$ \phi\frac{t_1,\dots,t_n}{x_1,\dots,x_n} = \phi\frac{t_1}{x_1}\cdots\frac{t_n}{x_n},\qquad \hbox{if $x_i\notin\var t_j$ for $i\neq j$} $$
+
+Now, notice that $\c M\vDash\forall x\phi$ does not imply $\c M\vDash\phi\frac tx$ for all $t\in\c T$, as one might hope.
+Indeed take $\phi=\exists y\,x\neqb y$, then $\c M\vDash\forall x\phi=\forall x\exists y\,x\neqb y$ whenever $\c M$ has at least two elements.
+But $\c M\nvDash\phi\frac yx=\exists y\,y\neqb y$.
+The issue here is that we substituted a variable within its scope with a term which includes it.
+
+We would like to define a condition which allows us to avoid this.
+
+\bdefn
+
+    Call $\phi,\frac tx$ {\emphcolor collision-free} if the following hold recursively:
+    \benum
+        \item if $\phi$ is prime,
+        \item for $\phi=\alpha\land\beta$ if $\alpha,\frac tx$ and $\beta,\frac tx$ are collision-free,
+        \item for $\phi=\neg\alpha$ if $\alpha,\frac tx$ is collision-free,
+        \item if $\phi=\forall x\alpha$,
+        \item for $\phi=\forall y\alpha$ and $x\neq y$, if $x\notin\free\alpha$ or $y\notin\var t$.
+    \eenum
+    We then say that $\phi,\sigma$ is {\emphcolor collision-free} if $\phi,\frac{x^\sigma}x$ is for every $x\in\Var$.
+
+    This is a necessary and sufficient condition for everything we want, but it is a bit too complicated for our taste.
+    So instead we use a more crude definition: we say that $\phi,\frac tx$ is {\emphcolor collision-free} if $y\notin\bnd\phi$ for all $y\in\var t-\set x$.
+    Where $\bnd\phi$ is all the variables $y$ such that $\forall y$ occurs in $\phi$.
+
+\edefn
+
+For $\c M=(\c A,w)$ and $\sigma$ a substitution, define $\c M^\sigma=(\c A,w^\sigma)$ where $x^{w^\sigma}=\sigma(x)^{\c M}$.
+In other words $x^{\c M^\sigma}=(x^\sigma)^{\c M}$.
+By term induction, we have $t^{\c M^\sigma}=t^{\sigma\c M}$.
+Notice that $\c M^\sigma$ coincides with $\c M^{\bar t^{\c M}}_{\bar x}$ for $\sigma=\frac{\bar t}{\bar x}$.
+
+\blemm[title=The Substitution Lemma]
+
+    Let $\c M$ be a model and $\sigma$ a substitution.
+    Then for $\phi\in\c L$ such that $\phi,\sigma$ is collision-free:
+    $$ \c M\vDash\phi^\sigma\iff\c M^\sigma\vDash\phi $$
+
+\elemm
+
+\Proof for prime formulas $t\eq s$ we have
+$$ \c M\vDash(t_1\eq t_2)^\sigma \iff t_1^{\sigma\c M}=t_2^{\sigma\c M} \iff t_1^{\c M^\sigma} = t_2^{\c M^\sigma} \iff \c M^\sigma\vDash t_1\eq t_2 $$
+and prime formulas $r\bar t$ are proven similarly.
+Conjunction and negation are clear, all that remains is to show for $\phi=\forall x\alpha$.
+
+We have $\c M\vDash(\forall x\alpha)^\sigma\iff\c M\vDash\forall x\alpha^\tau$ for $x^\tau=x$ and $y^\tau=y^\sigma$ for $x\neq y$.
+This is equivalent to $\c M^a_x\vDash\alpha^\tau$ for all $a\in A$.
+By the induction hypothesis, this is equivalent to $(\c M^a_x)^\tau\vDash\alpha$.
+Now we claim that $\c M_1=(\c M^a_x)^\tau=(\c M^\sigma)^a_x=\c M_2$.
+This is true since $x^{\c M_1}=x^{\tau\c M^a_x}=x^{\c M^a_x}=a$ and $x^{\c M_2}=a$.
+And for $x\neq y$, $y^{\c M_1}=y^{\tau\c M^a_x}=y^{\sigma\c M^a_x}$, since $\forall x\alpha,\frac{y^\sigma}y$ is collision-free this means that $x\notin\var y^\sigma$, so this is just equal to
+$y^{\sigma\c M}=y^{\c M^\sigma}$.
+And $y^{\c M_2}=y^{\c M^\sigma}$ as required.
+
+Thus we have $(\c M^\sigma)^a_x\vDash\phi$ for all $a\in A$ and so $\c M^\sigma\vDash\forall x\alpha$.
+\qed
+
+\bcoro
+
+    If $\phi,\frac{\bar t}{\bar x}$ is collision-free then
+    \benum
+        \item $\forall\bar x\phi\vDash\phi\frac{\bar t}{\bar x}$
+        \item $\phi\frac{\bar t}{\bar x}\vDash\exists\bar x\phi$
+        \item $\phi\frac sx,s\eq t\vDash\phi\frac tx$ provided $\phi,\frac sx$ is collision-free.
+    \eenum
+
+\ecoro
+
+\Proof $(1)$: let $\c M\vDash\forall\bar x\phi$ then $\c M^{\bar a}_{\bar x}\vDash\phi$ for all $\bar a\in A$, in particular for $\bar t^{\c M}$, so $\c M^{\bar t^{\c M}}_{\bar x}\vDash\phi$.
+By the previous lemma, this means $\c M\vDash\phi\frac{\bar t}{\bar x}$.
+
+$(2)$ is obtained from $(1)$ since $\phi\vDash\psi$ implies $\neg\psi\vDash\neg\phi$.
+
+$(3)$: let $\c M\vDash\phi\frac sx,s\eq t$, so $s^{\c M}=t^{\c M}$ and $\c M^{s^{\c M}}_x\vDash\phi$ and so $\c M^{t^{\c M}}_x\vDash\phi\implies\c M\vDash\phi\frac tx$.
+\qed
+
+Notice that we can define the {\it unique existential quantifier}: $\exists!$ by
+$$ \exists!x\alpha = \exists x\alpha\land\forall x\forall y\parens{\alpha\land\alpha\frac yx\to x\eq y},\qquad \hbox{for $y\notin\var\alpha$} $$
+we can also define it by (again for $y\notin\var\alpha$):
+$$ \exists!x\alpha = \exists x\forall y\parens{\phi\frac yx\oto x\eq y} $$
+
 \subsection{Elementary Equivalence}
 
 \bdefn
