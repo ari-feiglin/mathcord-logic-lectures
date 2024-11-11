@@ -121,8 +121,12 @@ We can use formula induction to prove the following:
 \elemm
 
 \Proof $\s s$ is obviously uniquely determined since it is the first character of $\phi$.
-Now, we need to prove that if $\phi_1\cdots\phi_n=\psi_1\cdots\psi_m$ then $n=m$ and $n=m$.
+Now, we need to prove that if $\phi_1\cdots\phi_n=\psi_1\cdots\psi_m$ then $n=m$ and $\phi_i=\psi_i$
+for $i=1,\dots,n$.
 To do so, we need to prove the claim that a proper prefix of a formula is not itself a formula.
+(Recall that a prefix of a string $\sigma_1\cdots\sigma_n$ is a string $\sigma_1\cdots\sigma_k$ for
+$k\leq n$.
+This prefix is {\it proper} if $k<n$).
 
 This uses formula induction: for prime formulas this is trivial.
 Otherwise, let $\phi=\s s\phi_1\cdots\phi_n$ then a proper prefix of $\phi$ is either $\s s$ which
@@ -191,12 +195,12 @@ That is, we have the following:
 
 Now, suppose $\phi$ is a formula with $\var\phi\subseteq\set{p_1,\dots,p_n}$, then we write
 $\phi(\bar p)$ for $\phi$.
-Now suppose $\phi=\phi(\bar x)$ and $w$ is a valuation with $wp_i=x_i$, then instead of writing
+Now suppose $\phi=\phi(\bar p)$ and $w$ is a valuation with $wp_i=x_i$, then instead of writing
 $w\phi$, we can write $\phi(\bar x)$.
 This is well-defined by the above lemma.
 
 Now, suppose that for every $n\in{\bb N}$ we have $p_n\in V$.
-Then we can define ${\cal F}^n_\ell=\set{\phi\in{\cal F}_\ell}[\var\phi\subseteq\set{1,\dots,n}]$,
+Then we can define ${\cal F}^n_\ell=\set{\phi\in{\cal F}_\ell}[\var\phi\subseteq\set{p_1,\dots,p_n}]$,
 the set of all formulas whose variables are contained in $p_1,\dots,p_n$.
 
 \bdefn
@@ -204,6 +208,8 @@ the set of all formulas whose variables are contained in $p_1,\dots,p_n$.
     We say that a formula $\phi\in{\cal F}^\ell_n$ {\emphcolor represents} a boolean function
     $f\colon\set{0,1}^n\longto\set{0,1}$ if for every valuation $w$,
     $$ w\phi = f(wp_1,\dots,wp_n) $$
+    equivalently, for all boolean vectors $\bar x\in\set{0,1}^n$,
+    $$ \phi(\bar x) = f(\bar x) $$
 
 \edefn
 
